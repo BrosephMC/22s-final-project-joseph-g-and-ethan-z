@@ -5,6 +5,7 @@
 #include "DocumentParser.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -23,23 +24,18 @@ void DocumentParser::ParseDocument(char *file) {
 
 void DocumentParser::ParseText(const char *text) {
 
-    doc.Parse(text);
-    //cout << doc["Hours"].GetString() << endl;
+    istringstream ss(text);
+    string word;
+
+    while (ss >> word){
+        cout << word << endl;
+        //insert into AVL tree
+    }
 }
 
 string DocumentParser::returnString(char *index) {
     cout << doc[index].GetString() << endl;
     return doc[index].GetString();
-}
-
-vector<string> DocumentParser::returnStringVector(char *index1, char *index2) {
-    vector<string> vector;
-    for(auto &current : doc[index1][index2].GetArray()) {
-        std::cout << "value: " << current.GetString() << std::endl;
-        //vector.push_back(current.GetString());
-        vector.emplace_back(current.GetString());
-    }
-    return vector;
 }
 
 void DocumentParser::test() {

@@ -19,7 +19,6 @@ public:
     void ParseDocument(char* file);
     void ParseText(const char *text);
     string returnString(char* index);
-    vector<string> returnStringVector(char* index1, char* index2);
 
     void test();
 
@@ -32,6 +31,8 @@ public:
     //get list of persons
 
 };
+
+//stopword map/hashmap/hashtable
 
 
 #endif //INC_22S_FINAL_PROJECT_JOSEPH_G_AND_ETHAN_Z_DOCUMENTPARSER_H

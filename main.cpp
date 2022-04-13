@@ -14,8 +14,6 @@ int main() {
 
     document.ParseText(document.returnString("text").c_str());
 
-    //document.returnStringVector("text","name");
-
     return 0;
     //DocumentParser.parsedocuments(asdfsadf);
 }
