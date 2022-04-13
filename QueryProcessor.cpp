@@ -3,3 +3,5 @@
 //
 
 #include "QueryProcessor.h"
+
+//stem the user query
