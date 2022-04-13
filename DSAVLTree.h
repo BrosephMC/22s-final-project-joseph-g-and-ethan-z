@@ -67,8 +67,8 @@ private:
 
 public:
     //Constructors and Destructors
-    DSAVLTree() : height(0);
-    DSAVLTree(const AVLTree& rhs);
+    DSAVLTree() : height(0) { };
+    DSAVLTree(const DSAVLTree<T>& rhs);
     ~DSAVLTree();
 
     //Getters and Setters
