@@ -1,21 +1,19 @@
 #include <iostream>
 
-#include include/rapidjson/document.h
+#include "DocumentParser.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
 
-    rapidjson::Document doc;
-    string wholeFile
-    // input the whole .json into wholeFile
-    doc.Parse();
+    using namespace std;
 
-    //DocumentParser.parsedocuments(asdfsadf)
-    //
+    cout << "Hello, World!" << endl;
+
+    DocumentParser document;
+    document.ParseDocument("temporary_data/blogs_0000001.json");
+    document.returnString("text");
+
+    document.ParseText(document.returnString("text").c_str());
 
     return 0;
+    //DocumentParser.parsedocuments(asdfsadf);
 }
-
-//this is some comment code
-
-//more test code
