@@ -5,6 +5,8 @@
 #ifndef INC_22S_FINAL_PROJECT_JOSEPH_G_AND_ETHAN_Z_DSAVLTREE_H
 #define INC_22S_FINAL_PROJECT_JOSEPH_G_AND_ETHAN_Z_DSAVLTREE_H
 
+#include <iostream>
+
 template<typename T>
 class DSAVLTree{
 private:
