@@ -10,7 +10,6 @@ int main() {
 
     DocumentParser document;
     document.ParseDocument("temporary_data/blogs_0000001.json");
-    document.returnString("text");
 
     document.ParseText(document.returnString("text").c_str());
 
