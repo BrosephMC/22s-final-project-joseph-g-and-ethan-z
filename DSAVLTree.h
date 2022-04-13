@@ -33,7 +33,7 @@ private:
      * @param element - Element to be inserted.
      * @param node - Node to check for insertion.
      */
-    void insert(const int& element, AVLNode*& node)
+    void insert(const int& element, AVLNode*& node);
 
     /**
      * Determines and calls the correct rotation function for this node to balance the tree.
@@ -67,8 +67,8 @@ private:
 
 public:
     //Constructors and Destructors
-    DSAVLTree() : height(0);
-    DSAVLTree(const AVLTree& rhs);
+    DSAVLTree() : height(0) { };
+    DSAVLTree(const DSAVLTree<T>& rhs);
     ~DSAVLTree();
 
     //Getters and Setters
