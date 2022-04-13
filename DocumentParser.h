@@ -8,6 +8,7 @@
 #include "include/rapidjson/document.h"
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -16,8 +17,26 @@ class DocumentParser {
 public:
     rapidjson::Document doc;
 
+    map<string, string> stopWords;
+
+    DocumentParser();
+
+    /**
+     * Prepares the specified document for parsing with RapidJson
+     * @param file - file path
+     */
     void ParseDocument(char* file);
+
+    /**
+     * Splits corresponding text field of json element into words
+     * @param index - string json element
+     */
     void ParseText(const char *text);
+
+    /**
+     * Returns corresponding text field of json element with RapidJson
+     * @param index - string json element
+     */
     string returnString(char* index);
 
     void test();
