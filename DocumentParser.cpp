@@ -33,12 +33,16 @@ void DocumentParser::ParseText(const char *text) {
         //convert word to lower case characters
         for(int i = 0; i < word.length(); i++){
             word[i] = tolower(word[i]);
+            if(word[i] == ',' || word[i] == '.' || word[i] == '\"'){
+                word.erase(i);
+            }
         }
 
         Porter2Stemmer::stem(word);
 
         cout << word;
 
+        //find stop words
         if(stopWords.find(word) != stopWords.end()){
             cout << " - STOPWORD";
         } else {
