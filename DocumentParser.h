@@ -19,6 +19,7 @@ public:
 
     map<string, string> stopWords;
 
+    //Initializer
     DocumentParser();
 
     /**
@@ -39,11 +40,12 @@ public:
      */
     string returnString(char* index);
 
-    void test();
+    /**
+     * Parses a set of files
+     * @param file - file path to folder
+     */
+    void ParseDatabase(char * file);
 
-    //breakup text into words
-    //remove stop words
-    //stem words
     //parse multiple files
 
     //get list of orgs

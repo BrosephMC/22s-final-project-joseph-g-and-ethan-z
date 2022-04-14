@@ -30,11 +30,22 @@ void DocumentParser::ParseText(const char *text) {
 
     while (ss >> word){
 
+        /*
+        if(word == ","){
+            cout << " comma ";
+            continue;
+            cout << " commac ";
+        }
+         */
+
         //convert word to lower case characters
+        //remove extra characters (keeps numbers and letters)
+        // TODO split words for dashes '-'
         for(int i = 0; i < word.length(); i++){
             word[i] = tolower(word[i]);
-            if(word[i] == ',' || word[i] == '.' || word[i] == '\"'){
-                word.erase(i);
+            if(word[i] < 48 || word[i] > 57 && word[i] < 97 || word[i] > 122){
+                word.erase(i, 1);
+                i--;
             }
         }
 
@@ -57,10 +68,8 @@ string DocumentParser::returnString(char *index) {
     return doc[index].GetString();
 }
 
-void DocumentParser::test() {
-    cout << doc["entities"]["persons"]["name"].GetString() << endl;
+void DocumentParser::ParseDatabase(char *file) {
 
-    doc.ParseInsitu("text");
 }
 
 DocumentParser::DocumentParser() {
