@@ -41,6 +41,7 @@ void DocumentParser::ParseText(const char *text) {
         //convert word to lower case characters
         //remove extra characters (keeps numbers and letters)
         // TODO split words for dashes '-'
+
         for(int i = 0; i < word.length(); i++){
             word[i] = tolower(word[i]);
             if(word[i] < 48 || word[i] > 57 && word[i] < 97 || word[i] > 122){
