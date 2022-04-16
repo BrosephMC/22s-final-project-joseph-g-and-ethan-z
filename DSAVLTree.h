@@ -35,7 +35,7 @@ private:
      * @param element - Element to be inserted.
      * @param node - Node to check for insertion.
      */
-    void insert(const int& element, AVLNode*& node);
+    void insert(const T& element, AVLNode*& node);
 
     /**
      * Determines and calls the correct rotation function for this node to balance the tree.
@@ -112,7 +112,7 @@ public:
      * @param element - The element to search for in the DSAVLTree.
      * @return Whether the element is in the DSAVLTree or not.
      */
-    bool contains(const T& element);
+    bool contains(const T& element) const;
 
     /**
      * Returns a reference to the element in the DSAVLTree. Throws an error if the element is not
@@ -147,7 +147,7 @@ int DSAVLTree<T>::getNodeHeight(DSAVLTree::AVLNode *node) {
 }
 
 template<typename T>
-void DSAVLTree<T>::insert(const int& element, DSAVLTree::AVLNode*& node) {
+void DSAVLTree<T>::insert(const T& element, DSAVLTree::AVLNode*& node) {
     if(node == nullptr)
         node = new AVLNode(element, nullptr, nullptr);
     else if(element < node->data)
@@ -325,7 +325,7 @@ void DSAVLTree<T>::insert(const T& element) {
 }
 
 template<typename T>
-bool DSAVLTree<T>::contains(const T& element) {
+bool DSAVLTree<T>::contains(const T& element) const{
     return contains(root, element);
 }
 
