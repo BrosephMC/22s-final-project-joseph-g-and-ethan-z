@@ -28,11 +28,19 @@ public:
     void indexWord(const std::string& word, const std::string& articleID);
 
     /**
-     * Returns a reference to the WordData that corresponds with the entered word.
+     * Returns if the given word corresponds to any WordData in the wordIndex.
+     * @param word - Word to check for.
+     * @return Whether the word is in the tree or not.
+     */
+    bool containsWord(const WordData& word) const;
+
+    /**
+     * Returns a reference to the WordData that corresponds with the entered word. Throws an error if
+     * the word isn't in the tree; call containsWord first.
      * @param word - Word to return.
      * @return WordData that corresponds with the entered word.
      */
-    WordData& getWord(const std::string& word);
+    WordData& getWord(const WordData& word);
 };
 
 

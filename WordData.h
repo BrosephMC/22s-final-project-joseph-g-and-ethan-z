@@ -20,9 +20,19 @@ public:
 
     //Overloaded Operators
     //Checks if the two WordDatas contain the same data
-    bool operator== (const WordData&) const;
+    bool operator== (const WordData& otherWord) const { return word == otherWord.word; }
     //Checks if word equals the inputted string
-    bool operator== (const std::string&) const;
+    bool operator== (const std::string& otherString) const { return word == otherString; }
+    //Checks if this WordData is less than another
+    bool operator< (const WordData& otherWord) const { return word < otherWord.word; }
+    //Checks if word is less than the inputted string
+    bool operator< (const std::string& otherString) const { return word < otherString; }
+    //Checks if this WordData is less than or equal to another
+    bool operator<= (const WordData& otherWord) const { return word <= otherWord.word; }
+    //Checks if word is less than or equal to the inputted string
+    bool operator<= (const std::string& otherString) const { return word <= otherString; }
+
+    friend std::ostream& operator<< (std::ostream& output, const WordData& wordData) { output << wordData.word; }
 };
 
 #endif //INC_22S_FINAL_PROJ_WORDDATA_H
