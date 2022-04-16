@@ -6,6 +6,8 @@
 #define INC_22S_FINAL_PROJECT_JOSEPH_G_AND_ETHAN_Z_DSAVLTREE_H
 
 #include <iostream>
+#include <algorithm>
+#include <stdexcept>
 
 template<typename T>
 class DSAVLTree{
@@ -65,6 +67,22 @@ private:
      */
     void doubleWithRightChild(AVLNode*& k2);
 
+    /**
+     * Recursive function to find if the tree contains an element. Called by public contains.
+     * @param node - Node to check.
+     * @param element - Element to look for.
+     * @return Whether the element was found.
+     */
+    bool contains(AVLNode* node, const T& element) const;
+
+    /**
+     * Recursive function to return an element in the tree. Called by public find.
+     * @param node - Node to check.
+     * @param element - Element to look for.
+     * @return A reference to the element that was searched for.
+     */
+    T& find(AVLNode* node, const T& element);
+
     //Recursive Output Functions
     void PreOrder(AVLNode* node, std::ostream& output);
     void InOrder(AVLNode* node, std::ostream& output);
@@ -79,10 +97,8 @@ private:
 public:
     //Constructors and Destructors
     DSAVLTree() : root(nullptr) { };
-    DSAVLTree(const DSAVLTree<T>& rhs) : root(nullptr);
+    DSAVLTree(const DSAVLTree<T>& rhs);
     ~DSAVLTree();
-
-    //Getters and Setters
 
     /**
      * Inserts the given element into the DSAVLTree.
@@ -104,25 +120,25 @@ public:
      * @param element - The element to search for in the DSAVLTree.
      * @return The element in the tree that was searched for.
      */
-    T& Find(const T& element);
+    T& find(const T& element);
 
     /**
      * Outputs the elements of the DSAVLTree pre order.
-     * @return A ostream with the elements of of the DSAVLTree pre order.
+     * @param output - The ostream to output to.
      */
-    std::ostream outputPreOrder();
+    void outputPreOrder(std::ostream& output);
 
     /**
      * Outputs the elements of the DSAVLTree in order.
-     * @return A ostream with the elements of of the DSAVLTree in order.
+     * @param output - The ostream to output to.
      */
-    std::ostream outputInOrder();
+    void outputInOrder(std::ostream& output);
 
     /**
      * Outputs the elements of the DSAVLTree post order.
-     * @return A ostream with the elements of of the DSAVLTree post order.
+     * @param output - The ostream to output to.
      */
-    std::ostream outputPostOrder();
+    void outputPostOrder(std::ostream& output);
 };
 
 template<typename T>
@@ -165,7 +181,7 @@ void DSAVLTree<T>::balance(DSAVLTree::AVLNode*& node) {
         else
             doubleWithRightChild(node);
     }
-    node->height = max(getNodeHeight(node->left), getNodeHeight(node->right)) + 1;
+    node->height = std::max(getNodeHeight(node->left), getNodeHeight(node->right)) + 1;
 }
 
 //Case 1
@@ -174,8 +190,8 @@ void DSAVLTree<T>::rotateWithLeftChild(DSAVLTree::AVLNode*& k2) {
     AVLNode* k1 = k2->left;
     k2->left = k1->right;
     k1->right = k2;
-    k2->height = max(getNodeHeight(k2->left), getNodeHeight(k2->right)) + 1;
-    k1->height = max(getNodeHeight(k1->left), k2->height) + 1;
+    k2->height = std::max(getNodeHeight(k2->left), getNodeHeight(k2->right)) + 1;
+    k1->height = std::max(getNodeHeight(k1->left), k2->height) + 1;
     k2 = k1;
 }
 
@@ -188,8 +204,8 @@ void DSAVLTree<T>::doubleWithLeftChild(DSAVLTree::AVLNode*& k2) {
     k1->right = k3->left;
     k3->left = k1;
     k2->left = k3;
-    k1->height = max(getNodeHeight(k1->left), getNodeHeight(k1->right)) + 1;
-    k3->height = max(k1->height, getNodeHeight(k3->right)) + 1;
+    k1->height = std::max(getNodeHeight(k1->left), getNodeHeight(k1->right)) + 1;
+    k3->height = std::max(k1->height, getNodeHeight(k3->right)) + 1;
     //Second Rotation
     rotateWithLeftChild(k2);
 }
@@ -200,8 +216,8 @@ void DSAVLTree<T>::rotateWithRightChild(DSAVLTree::AVLNode*& k2) {
     AVLNode* k1 = k2->right;
     k2->right = k1->left;
     k1->left = k2;
-    k2->height = max(getNodeHeight(k2->left), getNodeHeight(k2->right)) + 1;
-    k1->height = max(k2->height, getNodeHeight(k1->right)) + 1;
+    k2->height = std::max(getNodeHeight(k2->left), getNodeHeight(k2->right)) + 1;
+    k1->height = std::max(k2->height, getNodeHeight(k1->right)) + 1;
     k2 = k1;
 }
 
@@ -214,16 +230,58 @@ void DSAVLTree<T>::doubleWithRightChild(DSAVLTree::AVLNode *&k2) {
     k1->left = k3->right;
     k3->right = k1;
     k2->right = k3;
-    k1->height = max(getNodeHeight(k1->left), getNodeHeight(k1->right)) + 1;
-    k3->height = max(getNodeHeight(k3->left), k1->height) + 1;
+    k1->height = std::max(getNodeHeight(k1->left), getNodeHeight(k1->right)) + 1;
+    k3->height = std::max(getNodeHeight(k3->left), k1->height) + 1;
     //Second Rotation
     rotateWithRightChild(k2);
 }
 
 template<typename T>
+bool DSAVLTree<T>::contains(DSAVLTree::AVLNode* node, const T& element) const {
+    if(node->data == element)
+        return true;
+    if(node->data < element){
+        if(node->right == nullptr)
+            return false;
+        else
+            return contains(node->right, element);
+    }
+    else if(element < node->data){
+        if(node->left == nullptr)
+            return false;
+        else
+            return contains(node->left, element);
+    }
+    return false;
+}
+
+template<typename T>
+T &DSAVLTree<T>::find(DSAVLTree::AVLNode *node, const T &element) {
+    try{
+        if(node->data == element)
+            return node->data;
+        if(node->data < element){
+            if(node->right == nullptr)
+                throw std::runtime_error("DSAVLTree find(): Search element not in tree.");
+            else
+                return find(node->right, element);
+        }
+        else if(element < node->data){
+            if(node->left == nullptr)
+                throw std::runtime_error("DSAVLTree find(): Search element not in tree.");
+            else
+                return find(node->left, element);
+        }
+        throw std::runtime_error("DSAVLTree find(): Search element not in tree.");
+    }catch (std::exception& e){
+        std::cout << e.what() << std::endl;
+    }
+}
+
+template<typename T>
 void DSAVLTree<T>::PreOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
     if(node != nullptr){
-        output << node->data;
+        output << node->data << std::endl;
         PreOrder(node->left);
         PreOrder(node->right);
     }
@@ -233,7 +291,7 @@ template<typename T>
 void DSAVLTree<T>::InOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
     if(node != nullptr){
         InOrder(node->left, output);
-        output << node->data;
+        output << node->data << std::endl;
         InOrder(node->right, output);
     }
 }
@@ -243,7 +301,7 @@ void DSAVLTree<T>::PostOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
     if(node != nullptr){
         PostOrder(node->left);
         PostOrder(node->right);
-        output << node->data;
+        output << node->data << std::endl;
     }
 }
 
@@ -257,7 +315,7 @@ void DSAVLTree<T>::PostOrderDelete(DSAVLTree::AVLNode* node) {
 }
 
 template<typename T>
-DSAVLTree<T>::DSAVLTree(const DSAVLTree<T> &rhs) {
+DSAVLTree<T>::DSAVLTree(const DSAVLTree<T> &rhs) : root(nullptr) {
     *this = rhs;
 }
 
@@ -267,24 +325,28 @@ void DSAVLTree<T>::insert(const T& element) {
 }
 
 template<typename T>
-std::ostream DSAVLTree<T>::outputPreOrder() {
-    std::ostream output;
+bool DSAVLTree<T>::contains(const T& element) {
+    return contains(root, element);
+}
+
+template<typename T>
+T &DSAVLTree<T>::find(const T& element) {
+    return find(root, element);
+}
+
+template<typename T>
+void DSAVLTree<T>::outputPreOrder(std::ostream& output) {
     PreOrder(root, output);
-    return output;
 }
 
 template<typename T>
-std::ostream DSAVLTree<T>::outputInOrder() {
-    std::ostream output;
+void DSAVLTree<T>::outputInOrder(std::ostream& output) {
     InOrder(root, output);
-    return output;
 }
 
 template<typename T>
-std::ostream DSAVLTree<T>::outputPostOrder() {
-    std::ostream output;
+void DSAVLTree<T>::outputPostOrder(std::ostream& output) {
     PostOrder(root, output);
-    return output;
 }
 
 template<typename T>
