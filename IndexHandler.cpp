@@ -14,3 +14,11 @@ void IndexHandler::indexWord(const std::string& word, const std::string& article
     }
 
 }
+
+bool IndexHandler::containsWord(const WordData& word) const {
+    return wordIndex.contains(word);
+}
+
+WordData &IndexHandler::getWord(const WordData& word) {
+    return wordIndex.find(word);
+}
