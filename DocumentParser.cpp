@@ -3,10 +3,6 @@
 //
 
 #include "DocumentParser.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include "porter2_stemmer.h"
 
 using namespace std;
 
@@ -18,7 +14,8 @@ void DocumentParser::ParseDocument(char *file) {
     data_file.open(file);
     data_file.getline(wholeFile, maxCharCount);
     data_file.close();
-    cout << wholeFile << endl;
+    //cout << wholeFile << endl;
+    cout << file << " is parsed" << endl;
 
     doc.Parse(wholeFile);
 }
@@ -38,29 +35,15 @@ void DocumentParser::ParseText(const char *text) {
         }
          */
 
-        //convert word to lower case characters
-        //remove extra characters (keeps numbers and letters)
-        // TODO split words for dashes '-'
-
-        for(int i = 0; i < word.length(); i++){
-            word[i] = tolower(word[i]);
-            if(word[i] < 48 || word[i] > 57 && word[i] < 97 || word[i] > 122){
-                word.erase(i, 1);
-                i--;
-            }
-        }
-
-        Porter2Stemmer::stem(word);
-
-        cout << word;
+        simplifyWord(word);
 
         //find stop words
         if(stopWords.find(word) != stopWords.end()){
-            cout << " - STOPWORD";
+            //cout << " - STOPWORD";
         } else {
+            cout << word << endl;
             //insert into AVL tree
         }
-        cout << endl;
     }
 }
 
@@ -69,8 +52,94 @@ string DocumentParser::returnString(char *index) {
     return doc[index].GetString();
 }
 
-void DocumentParser::ParseDatabase(char *file) {
+void DocumentParser::ParseDatabase(char *path) {
+//https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
 
+    DIR *dir; struct dirent *diread;
+    vector<string> folders;
+
+    //put contents of directory into a vector
+    if ((dir = opendir(path)) != nullptr) {
+        while ((diread = readdir(dir)) != nullptr) {
+            folders.push_back(diread->d_name);
+        }
+        closedir (dir);
+    } else {
+        perror ("opendir");
+        //return EXIT_FAILURE;
+        cout << "EXIT FAILURE" << endl;
+    }
+
+    //outputs the contents
+    cout << " List of folders:" << endl;
+    for (auto folder : folders){
+        cout << folder << "| ";
+    }
+    cout << endl << endl;
+
+    string folder;
+    for(int i = 2; i < folders.size(); i++){
+
+        folder = folders.at(i);
+        cout << folder << " < this is a folder" << endl;
+        vector<string> files;
+
+        //creates a path string to specified folder
+        string appendedPathString = path;
+        appendedPathString += "/";
+        appendedPathString += folder;
+        char* appendedPath = const_cast<char *>(appendedPathString.c_str());
+        cout << appendedPath << endl;
+
+        //put file contents of directory into a vector
+        if ((dir = opendir(appendedPath)) != nullptr) {
+            while ((diread = readdir(dir)) != nullptr) {
+                files.push_back(diread->d_name);
+            }
+            closedir (dir);
+        } else {
+            cout << "could not open dir of appended path" << endl;
+            perror ("opendir");
+            //return EXIT_FAILURE;
+            cout << "EXIT FAILURE" << endl;
+        }
+
+        //iterates through and parses each file
+        for(int i = 2; i < files.size(); i++){
+            string file = files.at(i);
+            cout << file << "| " << endl;
+
+            string appendedPathString = appendedPath;
+            appendedPathString += "/";
+            appendedPathString += file;
+            char* appendedPath = const_cast<char *>(appendedPathString.c_str());
+            cout << appendedPath << endl;
+
+            DocumentParser fileDocument;
+            fileDocument.ParseDocument(appendedPath);
+            fileDocument.ParseText(fileDocument.returnString("text").c_str());
+        }
+        cout << endl;
+        cout << endl;
+    }
+
+    //
+}
+
+void DocumentParser::simplifyWord(string &word) {
+    //convert word to lower case characters
+    //remove extra characters (keeps numbers and letters)
+    // TODO split words for dashes '-'
+
+    for(int i = 0; i < word.length(); i++){
+        word[i] = tolower(word[i]);
+        if(word[i] < 48 || word[i] > 57 && word[i] < 97 || word[i] > 122){
+            word.erase(i, 1);
+            i--;
+        }
+    }
+
+    Porter2Stemmer::stem(word);
 }
 
 DocumentParser::DocumentParser() {

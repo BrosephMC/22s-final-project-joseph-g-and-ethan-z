@@ -9,6 +9,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <dirent.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include "porter2_stemmer.h"
 
 using namespace std;
 
@@ -42,11 +47,15 @@ public:
 
     /**
      * Parses a set of files
-     * @param file - file path to folder
+     * @param path - file path to folder
      */
-    void ParseDatabase(char * file);
+    void ParseDatabase(char * path);
 
-    //parse multiple files
+    /**
+     * Converts word to lower case, removes extra characters, and stems word
+     * @param text - string to modify
+     */
+    void simplifyWord(string& text);
 
     //get list of orgs
     //get list of persons
