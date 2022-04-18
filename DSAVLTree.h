@@ -8,6 +8,7 @@
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
+#include "WordData.h"
 
 template<typename T>
 class DSAVLTree{
@@ -83,6 +84,14 @@ private:
      */
     T& find(AVLNode* node, const T& element);
 
+    /**
+     *
+     * @param node
+     * @param word
+     * @param articleID
+     */
+    void indexWordInAVL(AVLNode* node, const std::string& word, const std::string& articleID);
+
     //Recursive Output Functions
     void PreOrder(AVLNode* node, std::ostream& output);
     void InOrder(AVLNode* node, std::ostream& output);
@@ -121,6 +130,13 @@ public:
      * @return The element in the tree that was searched for.
      */
     T& find(const T& element);
+
+    /**
+     *
+     * @param word
+     * @param articleID
+     */
+    void indexWordInAVL(const std::string& word, const std::string& articleID);
 
     /**
      * Outputs the elements of the DSAVLTree pre order.
@@ -281,6 +297,34 @@ T &DSAVLTree<T>::find(DSAVLTree::AVLNode *node, const T &element) {
 }
 
 template<typename T>
+void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &word, const std::string &articleID) {
+    if(node->data == word){
+        static_cast<WordData>(node->data).articles.push_back(articleID);
+        return;
+    }
+    if(node->data < word){
+        if(node->right == nullptr){
+            WordData insertWord(word);
+            insertWord.articles.push_back(articleID);
+            insert(insertWord);
+            return;
+        }
+        else
+            indexWordInAVL(node->right, word, articleID);
+    }
+    else if(WordData(word) < node->data) {
+        if (node->left == nullptr){
+            WordData insertWord(word);
+            insertWord.articles.push_back(articleID);
+            insert(insertWord);
+            return;
+        }
+        else
+            indexWordInAVL(node->left, word, articleID);
+    }
+}
+
+template<typename T>
 void DSAVLTree<T>::PreOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
     if(node != nullptr){
         output << node->data << std::endl;
@@ -334,6 +378,12 @@ bool DSAVLTree<T>::contains(const T& element) const{
 template<typename T>
 T &DSAVLTree<T>::find(const T& element) {
     return find(root, element);
+}
+
+template<typename T>
+void DSAVLTree<T>::indexWordInAVL(const std::string &word, const std::string &articleID) {
+    static_assert(std::is_base_of<WordData, T>::value, "Nodes must be WordData.");
+    indexWordInAVL(root, word, articleID);
 }
 
 template<typename T>
