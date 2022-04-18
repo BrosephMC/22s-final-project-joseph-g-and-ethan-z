@@ -15,12 +15,6 @@ private:
 
 public:
     /**
-     * Adds the given word to the word index.
-     * @param word - Word to be added to the index.
-     */
-    void insertWord(const std::string& word);
-
-    /**
      * Inserts the word if it isn't already in the index then adds the articleID to that word.
      * @param word - Word to find or create in the index.
      * @param articleID - ID of the article the word was found in.
