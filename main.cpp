@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
     document.ParseDatabase(argv[1], ih);
 
-    q.Search("time", ih);
+    q.Search("Gordon", ih);
 
     return 0;
 }

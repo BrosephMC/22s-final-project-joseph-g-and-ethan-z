@@ -244,14 +244,16 @@ bool DSAVLTree<T>::contains(DSAVLTree::AVLNode* node, const T& element) const {
     if(node->data == element)
         return true;
     if(node->data < element){
-        if(node->right == nullptr)
+        if(node->right == nullptr) {
             return false;
+        }
         else
             return contains(node->right, element);
     }
     else if(element < node->data){
-        if(node->left == nullptr)
+        if(node->left == nullptr) {
             return false;
+        }
         else
             return contains(node->left, element);
     }
@@ -260,11 +262,6 @@ bool DSAVLTree<T>::contains(DSAVLTree::AVLNode* node, const T& element) const {
 
 template<typename T>
 T &DSAVLTree<T>::find(DSAVLTree::AVLNode *node, const T &element) {
-    std::cout << "FIND" << std::endl;
-    std::cout << node->data << std::endl;
-    if(node->data == nullptr){
-        std::cout << "node data == nullptr" << std::endl;
-    }
     try{
         if(node->data == element)
             return node->data;

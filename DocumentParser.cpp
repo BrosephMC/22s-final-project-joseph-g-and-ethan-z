@@ -33,14 +33,14 @@ void DocumentParser::ParseText(const char *text, const char *id, IndexHandler &i
         if(stopWords.find(word) != stopWords.end()){
             //cout << " - STOPWORD";
         } else {
-            cout << word << endl;
+            //cout << word << endl;
             ih.indexWord(word, id);
         }
     }
 }
 
 string DocumentParser::returnString(char *index) {
-    cout << doc[index].GetString() << endl;
+    //cout << doc[index].GetString() << endl;
     return doc[index].GetString();
 }
 
