@@ -7,7 +7,7 @@
 using namespace std;
 
 void DocumentParser::ParseDocument(char *file) {
-    int maxCharCount = 10000;
+    int maxCharCount = 500000;
     char wholeFile[maxCharCount];
 
     fstream data_file;
@@ -26,14 +26,6 @@ void DocumentParser::ParseText(const char *text) {
     string word;
 
     while (ss >> word){
-
-        /*
-        if(word == ","){
-            cout << " comma ";
-            continue;
-            cout << " commac ";
-        }
-         */
 
         simplifyWord(word);
 
@@ -109,12 +101,14 @@ void DocumentParser::ParseDatabase(char *path) {
             string file = files.at(i);
             cout << file << "| " << endl;
 
+            //creates a path string to specified file
             string appendedPathString = appendedPath;
             appendedPathString += "/";
             appendedPathString += file;
             char* appendedPath = const_cast<char *>(appendedPathString.c_str());
             cout << appendedPath << endl;
 
+            //parses document text
             DocumentParser fileDocument;
             fileDocument.ParseDocument(appendedPath);
             fileDocument.ParseText(fileDocument.returnString("text").c_str());
@@ -122,8 +116,6 @@ void DocumentParser::ParseDatabase(char *path) {
         cout << endl;
         cout << endl;
     }
-
-    //
 }
 
 void DocumentParser::simplifyWord(string &word) {
