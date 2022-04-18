@@ -14,6 +14,7 @@
 #include <fstream>
 #include <sstream>
 #include "porter2_stemmer.h"
+#include "IndexHandler.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ public:
      * Splits corresponding text field of json element into words
      * @param index - string json element
      */
-    void ParseText(const char *text);
+    void ParseText(const char *text, const char *id, IndexHandler &ih);
 
     /**
      * Returns corresponding text field of json element with RapidJson
@@ -49,7 +50,7 @@ public:
      * Parses a set of files
      * @param path - file path to folder
      */
-    void ParseDatabase(char * path);
+    void ParseDatabase(char * path, IndexHandler &ih);
 
     /**
      * Converts word to lower case, removes extra characters, and stems word

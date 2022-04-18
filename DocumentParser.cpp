@@ -20,7 +20,7 @@ void DocumentParser::ParseDocument(char *file) {
     doc.Parse(wholeFile);
 }
 
-void DocumentParser::ParseText(const char *text) {
+void DocumentParser::ParseText(const char *text, const char *id, IndexHandler &ih) {
 
     istringstream ss(text);
     string word;
@@ -34,7 +34,7 @@ void DocumentParser::ParseText(const char *text) {
             //cout << " - STOPWORD";
         } else {
             cout << word << endl;
-            //insert into AVL tree
+            ih.indexWord(word, id);
         }
     }
 }
@@ -44,7 +44,7 @@ string DocumentParser::returnString(char *index) {
     return doc[index].GetString();
 }
 
-void DocumentParser::ParseDatabase(char *path) {
+void DocumentParser::ParseDatabase(char *path, IndexHandler &ih) {
 //https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
 
     DIR *dir; struct dirent *diread;
@@ -111,7 +111,7 @@ void DocumentParser::ParseDatabase(char *path) {
             //parses document text
             DocumentParser fileDocument;
             fileDocument.ParseDocument(appendedPath);
-            fileDocument.ParseText(fileDocument.returnString("text").c_str());
+            fileDocument.ParseText(fileDocument.returnString("text").c_str(), fileDocument.returnString("uuid").c_str(), ih);
         }
         cout << endl;
         cout << endl;
@@ -121,7 +121,7 @@ void DocumentParser::ParseDatabase(char *path) {
 void DocumentParser::simplifyWord(string &word) {
     //convert word to lower case characters
     //remove extra characters (keeps numbers and letters)
-    // TODO split words for dashes '-'
+    //TODO split words for dashes '-'
 
     for(int i = 0; i < word.length(); i++){
         word[i] = tolower(word[i]);

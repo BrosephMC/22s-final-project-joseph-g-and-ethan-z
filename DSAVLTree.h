@@ -238,6 +238,9 @@ void DSAVLTree<T>::doubleWithRightChild(DSAVLTree::AVLNode *&k2) {
 
 template<typename T>
 bool DSAVLTree<T>::contains(DSAVLTree::AVLNode* node, const T& element) const {
+    if(node == nullptr){
+        return false;
+    }
     if(node->data == element)
         return true;
     if(node->data < element){
@@ -257,6 +260,11 @@ bool DSAVLTree<T>::contains(DSAVLTree::AVLNode* node, const T& element) const {
 
 template<typename T>
 T &DSAVLTree<T>::find(DSAVLTree::AVLNode *node, const T &element) {
+    std::cout << "FIND" << std::endl;
+    std::cout << node->data << std::endl;
+    if(node->data == nullptr){
+        std::cout << "node data == nullptr" << std::endl;
+    }
     try{
         if(node->data == element)
             return node->data;
