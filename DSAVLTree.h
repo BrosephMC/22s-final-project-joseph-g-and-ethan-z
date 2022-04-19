@@ -298,6 +298,12 @@ T &DSAVLTree<T>::find(DSAVLTree::AVLNode *node, const T &element) {
 
 template<typename T>
 void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &word, const std::string &articleID) {
+    if(node == nullptr){
+        WordData insertWord(word);
+        insertWord.articles.push_back(articleID);
+        insert(insertWord);
+        return;
+    }
     if(node->data == word){
         static_cast<WordData>(node->data).articles.push_back(articleID);
         return;

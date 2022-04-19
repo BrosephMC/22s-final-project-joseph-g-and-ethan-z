@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void DocumentParser::ParseDocument(char *file) {
+void DocumentParser::ParseDocument(char *&file) {
     int maxCharCount = 500000;
     char wholeFile[maxCharCount];
 
@@ -103,11 +103,10 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
             char* appendedPath = const_cast<char *>(appendedPathString.c_str());
             cout << appendedPath << endl;
 
-            //parses document text
-            DocumentParser fileDocument;
-            fileDocument.ParseDocument(appendedPath);
-            fileDocument.ParseText(ih);
+            ParseDocument(appendedPath);
+            ParseText(ih);
         }
+
         cout << endl;
         cout << endl;
     }

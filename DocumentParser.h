@@ -32,19 +32,13 @@ public:
      * Prepares the specified document for parsing with RapidJson
      * @param file - file path
      */
-    void ParseDocument(char* file);
+    void ParseDocument(char *&file);
 
     /**
      * Splits corresponding text field of json element into words
      * @param index - string json element
      */
     void ParseText(IndexHandler &ih);
-
-    /**
-     * Returns corresponding text field of json element with RapidJson
-     * @param index - string json element
-     */
-    string& returnString(char* index);
 
     /**
      * Parses a set of files
