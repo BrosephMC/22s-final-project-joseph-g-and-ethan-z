@@ -3,6 +3,7 @@
 //
 
 #include "DocumentParser.h"
+#include <experimental/filesystem>
 
 using namespace std;
 
@@ -53,7 +54,6 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
         closedir (dir);
     } else {
         perror ("opendir");
-        //return EXIT_FAILURE;
         cout << "EXIT FAILURE" << endl;
     }
 
@@ -68,7 +68,7 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
     for(int i = 2; i < folders.size(); i++){
 
         folder = folders.at(i);
-        cout << folder << " < this is a folder" << endl;
+        //cout << folder << " < this is a folder" << endl;
         vector<string> files;
 
         //creates a path string to specified folder
@@ -76,7 +76,7 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
         appendedPathString += "/";
         appendedPathString += folder;
         char* appendedPath = const_cast<char *>(appendedPathString.c_str());
-        cout << appendedPath << endl;
+        //cout << appendedPath << endl;
 
         //put file contents of directory into a vector
         if ((dir = opendir(appendedPath)) != nullptr) {
@@ -87,21 +87,20 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
         } else {
             cout << "could not open dir of appended path" << endl;
             perror ("opendir");
-            //return EXIT_FAILURE;
             cout << "EXIT FAILURE" << endl;
         }
 
         //iterates through and parses each file
         for(int i = 2; i < files.size(); i++){
             string file = files.at(i);
-            cout << file << "| " << endl;
+            //cout << file << "| " << endl;
 
             //creates a path string to specified file
             string appendedPathString = appendedPath;
             appendedPathString += "/";
             appendedPathString += file;
             char* appendedPath = const_cast<char *>(appendedPathString.c_str());
-            cout << appendedPath << endl;
+            //cout << appendedPath << endl;
 
             ParseDocument(appendedPath);
             ParseText(ih);

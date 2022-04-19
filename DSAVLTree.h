@@ -305,7 +305,7 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
         return;
     }
     if(node->data == word){
-        static_cast<WordData>(node->data).articles.push_back(articleID);
+        node->data.articles.push_back(articleID);
         return;
     }
     if(node->data < word){
