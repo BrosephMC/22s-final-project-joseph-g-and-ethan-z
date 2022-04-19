@@ -20,9 +20,9 @@ void DocumentParser::ParseDocument(char *file) {
     doc.Parse(wholeFile);
 }
 
-void DocumentParser::ParseText(const char *text, const char *id, IndexHandler &ih) {
+void DocumentParser::ParseText(IndexHandler &ih) {
 
-    istringstream ss(text);
+    istringstream ss(doc["text"].GetString());
     string word;
 
     while (ss >> word){
@@ -34,17 +34,12 @@ void DocumentParser::ParseText(const char *text, const char *id, IndexHandler &i
             //cout << " - STOPWORD";
         } else {
             //cout << word << endl;
-            ih.indexWord(word, id);
+            ih.indexWord(word, doc["uuid"].GetString());
         }
     }
 }
 
-string DocumentParser::returnString(char *index) {
-    //cout << doc[index].GetString() << endl;
-    return doc[index].GetString();
-}
-
-void DocumentParser::ParseDatabase(char *path, IndexHandler &ih) {
+void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
 //https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
 
     DIR *dir; struct dirent *diread;
@@ -111,7 +106,7 @@ void DocumentParser::ParseDatabase(char *path, IndexHandler &ih) {
             //parses document text
             DocumentParser fileDocument;
             fileDocument.ParseDocument(appendedPath);
-            fileDocument.ParseText(fileDocument.returnString("text").c_str(), fileDocument.returnString("uuid").c_str(), ih);
+            fileDocument.ParseText(ih);
         }
         cout << endl;
         cout << endl;

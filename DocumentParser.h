@@ -38,19 +38,19 @@ public:
      * Splits corresponding text field of json element into words
      * @param index - string json element
      */
-    void ParseText(const char *text, const char *id, IndexHandler &ih);
+    void ParseText(IndexHandler &ih);
 
     /**
      * Returns corresponding text field of json element with RapidJson
      * @param index - string json element
      */
-    string returnString(char* index);
+    string& returnString(char* index);
 
     /**
      * Parses a set of files
      * @param path - file path to folder
      */
-    void ParseDatabase(char * path, IndexHandler &ih);
+    void ParseDatabase(char *& path, IndexHandler &ih);
 
     /**
      * Converts word to lower case, removes extra characters, and stems word
