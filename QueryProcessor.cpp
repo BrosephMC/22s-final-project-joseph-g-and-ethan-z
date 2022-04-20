@@ -23,3 +23,5 @@ void QueryProcessor::Search(string word, IndexHandler &ih) {
         std::cout << "Word not found" << std::endl;
     std::cout << "SEARCH end" << std::endl;
 }
+
+//std union library

@@ -52,9 +52,8 @@ public:
      */
     void simplifyWord(string& text);
 
-    //get list of orgs
-    //get list of persons
 
+    void indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON);
 };
 
 //stopword map/hashmap/hashtable

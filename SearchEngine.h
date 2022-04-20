@@ -16,6 +16,8 @@ private:
 
     DocumentParser document;
     IndexHandler ih;
+    //IndexHandler ihORG;
+    //IndexHandler ihPERSON;
     QueryProcessor q;
 
 public:

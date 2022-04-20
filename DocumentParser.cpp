@@ -31,13 +31,28 @@ void DocumentParser::ParseText(IndexHandler &ih) {
         simplifyWord(word);
 
         //find stop words
-        if(stopWords.find(word) != stopWords.end()){
+        if(stopWords.find(word) != stopWords.end() || word.length() <= 0){
             //cout << " - STOPWORD";
         } else {
             //cout << word << endl;
             ih.indexWord(word, doc["uuid"].GetString());
         }
     }
+}
+
+void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON){
+    cout << " Organizations: ";
+    for (int i = 0; i < doc["entities"]["organizations"].Size(); i++){
+        cout << doc["entities"]["organizations"][i]["name"].GetString() << ", ";
+        ihORG.indexWord(doc["entities"]["organizations"][i]["name"].GetString(), doc["uuid"].GetString());
+    }
+    cout << endl;
+    cout << " Persons: ";
+    for (int i = 0; i < doc["entities"]["persons"].Size(); i++){
+        cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
+        ihPERSON.indexWord(doc["entities"]["persons"][i]["name"].GetString(), doc["uuid"].GetString());
+    }
+    cout << endl;
 }
 
 void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
@@ -104,6 +119,7 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
 
             ParseDocument(appendedPath);
             ParseText(ih);
+            //indexOrgsAndPersons(ihORG, ihPERSON);
         }
 
         cout << endl;
@@ -113,12 +129,11 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
 
 void DocumentParser::simplifyWord(string &word) {
     //convert word to lower case characters
-    //remove extra characters (keeps numbers and letters)
-    //TODO split words for dashes '-'
+    //remove extra characters (keeps letters)
 
     for(int i = 0; i < word.length(); i++){
         word[i] = tolower(word[i]);
-        if(word[i] < 48 || word[i] > 57 && word[i] < 97 || word[i] > 122){
+        if(word[i] < 97 || word[i] > 122){
             word.erase(i, 1);
             i--;
         }
@@ -764,6 +779,4 @@ DocumentParser::DocumentParser() {
     stopWords["yourselves"] = "yourselves";
     stopWords["you've"] = "you've";
     stopWords["zero"] = "zero";
-
-    stopWords[","] = ",";
 }
