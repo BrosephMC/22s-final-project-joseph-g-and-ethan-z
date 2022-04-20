@@ -36,15 +36,15 @@ public:
 
     /**
      * Splits corresponding text field of json element into words
-     * @param index - string json element
+     * @param ih - IndexHandler for words
      */
-    void ParseText(IndexHandler &ih);
+    void ParseText(IndexHandler &ih, string fileName);
 
     /**
      * Parses a set of files
      * @param path - file path to folder
      */
-    void ParseDatabase(char *& path, IndexHandler &ih);
+    void ParseDatabase(char *& path, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON);
 
     /**
      * Converts word to lower case, removes extra characters, and stems word
@@ -52,7 +52,9 @@ public:
      */
     void simplifyWord(string& text);
 
-
+    /**
+     *
+     */
     void indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON);
 };
 

@@ -9,7 +9,7 @@ SearchEngine::SearchEngine(const string &dataBase) : dataBasePath(dataBase) {
 }
 
 void SearchEngine::parseDatabase(char*& path) {
-    document.ParseDatabase(path, ih);
+    document.ParseDatabase(path, ih, ihORG, ihPERSON);
 }
 
 void SearchEngine::search(const string& query) {

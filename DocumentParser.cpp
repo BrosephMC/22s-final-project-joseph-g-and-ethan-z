@@ -21,7 +21,7 @@ void DocumentParser::ParseDocument(char *&file) {
     doc.Parse(wholeFile);
 }
 
-void DocumentParser::ParseText(IndexHandler &ih) {
+void DocumentParser::ParseText(IndexHandler &ih, string fileName) {
 
     istringstream ss(doc["text"].GetString());
     string word;
@@ -35,7 +35,11 @@ void DocumentParser::ParseText(IndexHandler &ih) {
             //cout << " - STOPWORD";
         } else {
             //cout << word << endl;
-            ih.indexWord(word, doc["uuid"].GetString());
+            //ih.indexWord(word, doc["uuid"].GetString());
+            string id = doc["uuid"].GetString();
+            id += " ";
+            id += fileName;
+            ih.indexWord(word, id);
         }
     }
 }
@@ -55,7 +59,7 @@ void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPE
     cout << endl;
 }
 
-void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
+void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON) {
 //https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
 
     DIR *dir; struct dirent *diread;
@@ -118,8 +122,8 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih) {
             //cout << appendedPath << endl;
 
             ParseDocument(appendedPath);
-            ParseText(ih);
-            //indexOrgsAndPersons(ihORG, ihPERSON);
+            ParseText(ih, files.at(i));
+            indexOrgsAndPersons(ihORG, ihPERSON);
         }
 
         cout << endl;

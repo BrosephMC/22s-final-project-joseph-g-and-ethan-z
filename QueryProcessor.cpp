@@ -6,7 +6,11 @@
 #include "DocumentParser.h"
 
 //stem the user query
-void QueryProcessor::Search(string word, IndexHandler &ih) {
+void QueryProcessor::Search(string query, IndexHandler &ih) {
+
+    //if no prefixes
+    string word = query;
+
     std::cout << "SEARCH" << std::endl;
     DocumentParser doc;
     doc.simplifyWord(word);
@@ -24,4 +28,5 @@ void QueryProcessor::Search(string word, IndexHandler &ih) {
     std::cout << "SEARCH end" << std::endl;
 }
 
-//std union library
+//std union intersection library
+//PERSON and ORG search will always be AND
