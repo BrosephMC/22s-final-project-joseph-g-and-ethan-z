@@ -6,9 +6,13 @@ int main(int argc, char** argv) {
 
     using namespace std;
 
-    SearchEngine searchEngine(argv[2]);
+    SearchEngine searchEngine;
     searchEngine.parseDatabase(argv[2]);
-    searchEngine.search(argv[1]);
+    string input;
+    cout << "Search query: " << endl;
+    getline(cin, input);
+    cout << "cin: " << input << endl;
+    searchEngine.search(input);
 
     return 0;
 }

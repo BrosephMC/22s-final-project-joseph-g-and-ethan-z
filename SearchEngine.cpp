@@ -4,9 +4,12 @@
 
 #include "SearchEngine.h"
 
+/*
 SearchEngine::SearchEngine(const string &dataBase) : dataBasePath(dataBase) {
 
 }
+ */
+SearchEngine::SearchEngine(){}
 
 void SearchEngine::parseDatabase(char*& path) {
     document.ParseDatabase(path, ih, ihORG, ihPERSON);

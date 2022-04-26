@@ -22,7 +22,8 @@ private:
 
 public:
     //Constructors and Destructors
-    SearchEngine(const string& dataBase);
+    //SearchEngine(const string& dataBase);
+    SearchEngine();
 
     /**
      * Calls the ParseDatabse function in DocumentParser
