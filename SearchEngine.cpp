@@ -16,5 +16,5 @@ void SearchEngine::parseDatabase(char*& path) {
 }
 
 void SearchEngine::search(const string& query) {
-    q.Search(query, ih);
+    q.Search(query, ih, ihORG, ihPERSON);
 }

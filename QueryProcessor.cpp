@@ -6,7 +6,7 @@
 #include "DocumentParser.h"
 
 //stem the user query
-void QueryProcessor::Search(string query, IndexHandler &ih) {
+void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON) {
 
     istringstream ss(query);
     string word;
@@ -24,11 +24,10 @@ void QueryProcessor::Search(string query, IndexHandler &ih) {
 
     //iterate through each word
     for(int i = 0; i < queryList.size(); i++) {
-        cout << "SEARCH" << endl;
+        cout << " SEARCH" << endl;
         word = queryList.at(i);
         cout << "search word: " << word << endl;
 
-        //AND
         if(word == "AND"){
             //AND element1 element2
             cout << "AND" << endl;
@@ -36,15 +35,41 @@ void QueryProcessor::Search(string query, IndexHandler &ih) {
             string word2 = queryList.at(i+2);
             if(ih.containsWord(word1) && ih.containsWord(word2)){
                 cout << "has both words: " << word1 << " and " << word2 << endl;
-                getIntersection(ih.getWord(word1).articles, ih.getWord(word2).articles, results);
+                results = intersection(ih.getWord(word1).articles, ih.getWord(word2).articles);
             } else {
-                cout << "does not have both words" << endl;
+                cout << "does not have both words" << word1 << " and " << word2 << endl;
             }
             i+= 2;
             continue;
-        } else if(word == "NOT"){
-            cout << "NOT implementation needed" << endl;
-            //getIntersection(ih.getWord(word), results,)
+        }
+        else if(word == "NOT"){
+            cout << "NOT" << endl;
+            string word1 = queryList.at(i+1);
+            if(ih.containsWord(word1)){
+                cout << "has NOT word: " << word1 << endl;
+                int differenceNum = results.size();
+                results = difference(results, ih.getWord(word1).articles);
+                cout << "overlap: " << labs(differenceNum - results.size()) << endl;
+            } else {
+                cout << "does not have NOT word: " << word1 << endl;
+            }
+            i+= 1;
+            continue;
+        }
+        else if(word == "ORG"){
+            cout << "ORG" << endl;
+            string word1 = queryList.at(i+1);
+            if(ihORG.containsWord(word1)){
+                results.insert(results.end(), ih.getWord(word1).articles.begin(), ih.getWord(word1).articles.end());
+            } else {
+                //dont index orgs?
+                cout << "does not have ORG: " << word1 << endl;
+            }
+            i+=1;
+            continue;
+        }
+        else if(word == "PERSON"){
+            cout << "PERSON implementation" << endl;
         }
 
         //if single word
@@ -67,41 +92,35 @@ void QueryProcessor::Search(string query, IndexHandler &ih) {
 
 }
 
-//https://www.youtube.com/watch?v=ZkvWJlSAaSA
-void QueryProcessor::getIntersection(vector<string> &vector1, vector<string> &vector2, vector<string> &results){
+//https://stackoverflow.com/questions/19483663/vector-intersection-in-c
+vector<string> QueryProcessor::intersection(vector<string> &v1, vector<string> &v2) {
+    vector<string> v3;
 
-    vector<string> intersection;
+    sort(v1.begin(), v1.end());
+    sort(v2.begin(), v2.end());
 
-    cout << "Intersection: " << endl;
+    set_intersection(v1.begin(),v1.end(),
+                          v2.begin(),v2.end(),
+                          back_inserter(v3));
+    return v3;
+}
 
-    for(int i = 0; i < vector1.size(); i++){
-        int j;
-        for(j = 0; j < i; j++){
-            if(vector1.at(i) == vector1.at(j)){
-                break;
-            }
-        }
-        if(j == i){
-            intersection.push_back(vector1.at(i));
-        }
-    }
+//https://stackoverflow.com/questions/641724/remove-the-common-entities-from-two-vector
+vector<string> QueryProcessor::difference(vector<string> &v1, vector<string> &v2) {
+    vector<string> v3;
 
-    for(int i = 0; i < intersection.size(); i++){
-        bool hasIntersection = false;
-        for(int j = 0; j < vector2.size(); j++){
-            if(intersection.at(i) == vector2.at(j)){
-                hasIntersection = true;
-            }
-        }
-        if(hasIntersection){
-            cout << " - " << intersection.at(i) << endl;
-            results.push_back(intersection.at(i));
-        }
-    }
+    sort(v1.begin(), v1.end());
+    sort(v2.begin(), v2.end());
+
+    set_difference(v1.begin(),v1.end(),
+                     v2.begin(),v2.end(),
+                     back_inserter(v3));
+    return v3;
 }
 
 void QueryProcessor::printResults(vector<string> &results) {
     cout << "Final search results: " << endl;
+    cout << results.size() << endl;
 
     //duplicate detection may not be perfect
     int duplicate = 0;

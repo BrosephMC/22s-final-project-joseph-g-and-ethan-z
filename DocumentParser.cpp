@@ -51,12 +51,12 @@ void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPE
         ihORG.indexWord(doc["entities"]["organizations"][i]["name"].GetString(), doc["uuid"].GetString());
     }
     cout << endl;
-    cout << " Persons: ";
+    //cout << " Persons: ";
     for (int i = 0; i < doc["entities"]["persons"].Size(); i++){
-        cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
+        //cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
         ihPERSON.indexWord(doc["entities"]["persons"][i]["name"].GetString(), doc["uuid"].GetString());
     }
-    cout << endl;
+    //cout << endl;
 }
 
 void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON) {
