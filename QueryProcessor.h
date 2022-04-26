@@ -16,7 +16,8 @@ class QueryProcessor {
 public:
 
     void Search(string word, IndexHandler &ih);
-    void getIntersection(vector<string> vector1, vector<string> vector2);
+    void getIntersection(vector<string> &vector1, vector<string> &vector2, vector<string> &results);
+    void printResults(vector<string> &results);
 
 };
 

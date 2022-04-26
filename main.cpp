@@ -11,7 +11,6 @@ int main(int argc, char** argv) {
     string input;
     cout << "Search query: " << endl;
     getline(cin, input);
-    cout << "cin: " << input << endl;
     searchEngine.search(input);
 
     return 0;
