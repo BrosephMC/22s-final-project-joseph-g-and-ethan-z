@@ -152,19 +152,55 @@ void QueryProcessor::printResults(vector<string> &results) {
     cout << "Final search results: " << endl;
     cout << results.size() << endl;
 
-    //duplicate detection may not be perfect
-    //TODO last file is not counted, needs to be fixed
-    int duplicate = 0;
-    for(int i = 0; i < results.size(); i++){
-        if(i > 0)
-            if(results.at(i-1) == results.at(i)){
-                duplicate++;
-                continue;
-            }
-        if(duplicate > 0)
-            cout << " x" << duplicate+1;
-        cout << endl << results.at(i);
-        duplicate = 0;
+    //https://thispointer.com/c-how-to-find-duplicates-in-a-vector/
+
+    // Create a map to store the frequency of each element in vector
+    map<string, int> countMap;
+    // Iterate over the vector and store the frequency of each element in map
+    for (auto & elem : results)
+    {
+        auto loopResult = countMap.insert(pair<string, int>(elem, 1));
+        if (loopResult.second == false)
+            loopResult.first->second++;
     }
-    cout << endl;
+
+    sortMap(countMap);
+
+    // Iterate over the map
+    for (auto & elem : countMap)
+    {
+        cout << elem.first;
+        if(elem.second > 1)
+            cout << " x" << elem.second;
+        cout << endl;
+    }
+}
+
+//https://www.geeksforgeeks.org/sorting-a-map-by-value-in-c-stl/
+bool QueryProcessor::cmpMap(pair<string, int>& a, pair<string, int>& b)
+{
+    return (a.second < b.second);
+}
+
+void QueryProcessor::sortMap(map<string, int>& M)
+{
+
+    // Declare vector of pairs
+    vector<pair<string, int> > A;
+
+    // Copy key-value pair from Map
+    // to vector of pairs
+    for (auto& it : M) {
+        A.push_back(it);
+    }
+
+    // Sort using comparator function
+    sort(A.begin(), A.end(),QueryProcessor::cmpMap);
+
+    // Print the sorted value
+    //for (auto& it : A) {
+    //
+    //    cout << it.first << ' '
+    //         << it.second << endl;
+    //}
 }

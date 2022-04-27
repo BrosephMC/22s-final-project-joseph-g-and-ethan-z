@@ -8,6 +8,7 @@
 #include <string>
 #include "IndexHandler.h"
 #include "porter2_stemmer.h"
+#include <map>;
 
 using namespace std;
 
@@ -19,6 +20,8 @@ public:
     void printResults(vector<string> &results);
     vector<string> intersection(vector<string> &v1, vector<string> &v2);
     vector<string> difference(vector<string> &v1, vector<string> &v2);
+    void sortMap(map<string, int>& M);
+    static bool cmpMap(pair<string, int>& a, pair<string, int>& b);
 
 };
 
