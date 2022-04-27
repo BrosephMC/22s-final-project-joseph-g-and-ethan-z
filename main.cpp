@@ -9,9 +9,13 @@ int main(int argc, char** argv) {
     SearchEngine searchEngine;
     searchEngine.parseDatabase(argv[2]);
     string input;
-    cout << "Search query: " << endl;
-    getline(cin, input);
-    searchEngine.search(input);
+    while(input != "q"){
+        cout << "Search query (type \"q\" to quit): " << endl;
+        getline(cin, input);
+        if(input == "q")
+            break;
+        searchEngine.search(input);
+    }
 
     return 0;
 }

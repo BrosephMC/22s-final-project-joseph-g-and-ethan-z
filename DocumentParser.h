@@ -38,7 +38,7 @@ public:
      * Splits corresponding text field of json element into words
      * @param ih - IndexHandler for words
      */
-    void ParseText(IndexHandler &ih, string fileName);
+    void ParseText(IndexHandler &ih, const string& fileName);
 
     /**
      * Parses a set of files
@@ -55,7 +55,7 @@ public:
     /**
      *
      */
-    void indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON);
+    void indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, const string& fileName);
 };
 
 //stopword map/hashmap/hashtable

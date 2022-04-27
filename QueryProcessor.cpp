@@ -20,6 +20,10 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
             doc.simplifyWord(word);
         }
         queryList.push_back(word);
+        if(word == "ORG" || word == "PERSON"){
+            ss >> word;
+            queryList.push_back(word);
+        }
     }
 
     //iterate through each word
@@ -28,48 +32,74 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
         word = queryList.at(i);
         cout << "search word: " << word << endl;
 
-        if(word == "AND"){
+        if(word == "OR"){
+            continue;
+        }
+        else if(word == "AND"){
             //AND element1 element2
             cout << "AND" << endl;
-            string word1 = queryList.at(i+1);
-            string word2 = queryList.at(i+2);
-            if(ih.containsWord(word1) && ih.containsWord(word2)){
-                cout << "has both words: " << word1 << " and " << word2 << endl;
-                results = intersection(ih.getWord(word1).articles, ih.getWord(word2).articles);
-            } else {
-                cout << "does not have both words" << word1 << " and " << word2 << endl;
+            try {
+                string word1 = queryList.at(i + 1);
+                string word2 = queryList.at(i + 2);
+                if (ih.containsWord(word1) && ih.containsWord(word2)) {
+                    cout << "has both words: " << word1 << " and " << word2 << endl;
+                    results = intersection(ih.getWord(word1).articles, ih.getWord(word2).articles);
+                } else {
+                    cout << "does not have both words" << word1 << " and " << word2 << endl;
+                }
+                i += 2;
+                continue;
+            } catch(const std::exception& e) {
+                cout << "Insufficient arguments" << endl;
+                i+= 100;
+                continue;
             }
-            i+= 2;
-            continue;
         }
         else if(word == "NOT"){
             cout << "NOT" << endl;
-            string word1 = queryList.at(i+1);
-            if(ih.containsWord(word1)){
-                cout << "has NOT word: " << word1 << endl;
-                int differenceNum = results.size();
-                results = difference(results, ih.getWord(word1).articles);
-                cout << "overlap: " << labs(differenceNum - results.size()) << endl;
-            } else {
-                cout << "does not have NOT word: " << word1 << endl;
+            try {
+                string word1 = queryList.at(i + 1);
+                if (ih.containsWord(word1)) {
+                    cout << "has NOT word: " << word1 << endl;
+                    int differenceNum = results.size();
+                    results = difference(results, ih.getWord(word1).articles);
+                    cout << "overlap: " << labs(differenceNum - results.size()) << endl;
+                } else {
+                    cout << "does not have NOT word: " << word1 << endl;
+                }
+                i += 1;
+                continue;
+            } catch(const std::exception& e) {
+                cout << "Insufficient arguments" << endl;
+                i += 100;
+                continue;
             }
-            i+= 1;
-            continue;
         }
         else if(word == "ORG"){
             cout << "ORG" << endl;
             string word1 = queryList.at(i+1);
+            cout << word1 << endl;
             if(ihORG.containsWord(word1)){
-                results.insert(results.end(), ih.getWord(word1).articles.begin(), ih.getWord(word1).articles.end());
+                results = intersection(ihORG.getWord(word1).articles, results);
             } else {
-                //dont index orgs?
                 cout << "does not have ORG: " << word1 << endl;
+                results = {};
             }
             i+=1;
             continue;
         }
         else if(word == "PERSON"){
-            cout << "PERSON implementation" << endl;
+            cout << "PERSON" << endl;
+            string word1 = queryList.at(i+1);
+            cout << word1 << endl;
+            if(ihPERSON.containsWord(word1)){
+                results = intersection(ihPERSON.getWord(word1).articles, results);
+            } else {
+                cout << "does not have PERSON: " << word1 << endl;
+                results = {};
+            }
+            i+=1;
+            continue;
         }
 
         //if single word
@@ -123,6 +153,7 @@ void QueryProcessor::printResults(vector<string> &results) {
     cout << results.size() << endl;
 
     //duplicate detection may not be perfect
+    //TODO last file is not counted, needs to be fixed
     int duplicate = 0;
     for(int i = 0; i < results.size(); i++){
         if(i > 0)
@@ -137,5 +168,3 @@ void QueryProcessor::printResults(vector<string> &results) {
     }
     cout << endl;
 }
-
-//PERSON and ORG search will always be one

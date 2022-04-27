@@ -15,16 +15,20 @@ void DocumentParser::ParseDocument(char *&file) {
     data_file.open(file);
     data_file.getline(wholeFile, maxCharCount);
     data_file.close();
-    //cout << wholeFile << endl;
     cout << file << " is parsed" << endl;
 
     doc.Parse(wholeFile);
 }
 
-void DocumentParser::ParseText(IndexHandler &ih, string fileName) {
+void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
 
     istringstream ss(doc["text"].GetString());
     string word;
+
+    string title = doc["title"].GetString();
+    string date = doc["published"].GetString();
+    cout << " Title: " << title << endl;
+    cout << " Date published: " << date << endl;
 
     while (ss >> word){
 
@@ -34,8 +38,6 @@ void DocumentParser::ParseText(IndexHandler &ih, string fileName) {
         if(stopWords.find(word) != stopWords.end() || word.length() <= 0){
             //cout << " - STOPWORD";
         } else {
-            //cout << word << endl;
-            //ih.indexWord(word, doc["uuid"].GetString());
             string id = doc["uuid"].GetString();
             id += " ";
             id += fileName;
@@ -44,19 +46,24 @@ void DocumentParser::ParseText(IndexHandler &ih, string fileName) {
     }
 }
 
-void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON){
+void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, const string& fileName){
+
+    string id = doc["uuid"].GetString();
+    id += " ";
+    id += fileName;
+
     cout << " Organizations: ";
     for (int i = 0; i < doc["entities"]["organizations"].Size(); i++){
         cout << doc["entities"]["organizations"][i]["name"].GetString() << ", ";
-        ihORG.indexWord(doc["entities"]["organizations"][i]["name"].GetString(), doc["uuid"].GetString());
+        ihORG.indexWord(doc["entities"]["organizations"][i]["name"].GetString(), id);
     }
     cout << endl;
-    //cout << " Persons: ";
+    cout << " Persons: ";
     for (int i = 0; i < doc["entities"]["persons"].Size(); i++){
-        //cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
-        ihPERSON.indexWord(doc["entities"]["persons"][i]["name"].GetString(), doc["uuid"].GetString());
+        cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
+        ihPERSON.indexWord(doc["entities"]["persons"][i]["name"].GetString(), id);
     }
-    //cout << endl;
+    cout << endl;
 }
 
 void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON) {
@@ -123,7 +130,7 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &
 
             ParseDocument(appendedPath);
             ParseText(ih, files.at(i));
-            indexOrgsAndPersons(ihORG, ihPERSON);
+            indexOrgsAndPersons(ihORG, ihPERSON, files.at(i));
         }
 
         cout << endl;
