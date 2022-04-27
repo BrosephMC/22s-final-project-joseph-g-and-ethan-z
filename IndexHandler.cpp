@@ -3,6 +3,7 @@
 //
 
 #include "IndexHandler.h"
+#include <fstream>
 
 void IndexHandler::indexWord(const std::string& word, const std::string& articleID) {
     wordIndex.indexWordInAVL(word, articleID);
@@ -14,4 +15,10 @@ bool IndexHandler::containsWord(const WordData& word) const {
 
 WordData &IndexHandler::getWord(const WordData& word) {
     return wordIndex.find(word);
+}
+
+void IndexHandler::saveIndex(){
+    ofstream savedIndex("savedIndex.dat");
+    wordIndex.PreOrder(savedIndex);
+    savedIndex.close();
 }

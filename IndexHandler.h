@@ -35,6 +35,11 @@ public:
      * @return WordData that corresponds with the entered word.
      */
     WordData& getWord(const WordData& word);
+
+    /**
+     * Saves the index to file.
+     */
+    void saveIndex();
 };
 
 
