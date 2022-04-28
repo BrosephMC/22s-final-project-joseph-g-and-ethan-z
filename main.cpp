@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    DSHashTable table(50);
+    DSHashTable table(2);
     WordData hello("hello");
     hello.articles.push_back("534850");
     hello.articles.push_back("489537");
@@ -21,9 +21,9 @@ int main(int argc, char** argv) {
     table.insert(goodbye);
     table.insert(how);
 
-    cout << table["hello"].articles[0] << endl;
-    table["hello"].articles[0] = "000000";
-    cout << table["hello"].articles[0] << endl;
+    cout << table["goodbye"].articles[0] << endl;
+    table["goodbye"].articles[0] = "000000";
+    cout << table["goodbye"].articles[0] << endl;
 
 
     return 0;
