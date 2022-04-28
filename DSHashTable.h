@@ -6,40 +6,57 @@
 #define INC_22S_FINAL_PROJ_DSHASHTABLE_H
 
 #include <iostream>
+#include <string>
+#include <functional>
 #include <list>
 
-//Learned from https://www.educative.io/edpresso/how-to-implement-a-hash-table-in-cpp
-//and https://www.journaldev.com/35238/hash-table-in-c-plus-plus
-template<typename T>
+#include "WordData.h"
+
 class DSHashTable{
 private:
-    list<T>* table;
+    list<WordData>* table;
     int totalElements;
-
-    int getHash(T key);
 
 public:
     DSHashTable(int size);
 
-    void add(T key);
+    void insert(const WordData& element);
 
-    void remove(T key);
+    WordData& operator[](const std::string& key);
+
+    WordData& operator[](const WordData& key);
 };
 
-template<typename T>
-int DSHashTable<T>::getHash(T key) {
-    return key % totalElements;
-}
-
-template<typename T>
-DSHashTable<T>::DSHashTable(int size) {
+DSHashTable::DSHashTable(int size) {
     totalElements = size;
-    table = new list<T>[totalElements];
+    table = new list<WordData>[totalElements];
 }
 
-template<typename T>
-void DSHashTable<T>::add(T key) {
-    table[getHash(key)]
+void DSHashTable::insert(const WordData& element) {
+    std::hash<std::string> hasher;
+    auto location = hasher(element.word) % totalElements;
+    cout << "Inserted " << element << " at " << location << endl;
+    table[location].push_back(element);
 }
+
+WordData &DSHashTable::operator[](const string& key) {
+    std::hash<std::string> hasher;
+    int location = hasher(key) % totalElements;
+    for(WordData& x : table[location]){
+        if(x == key)
+            return x;
+    }
+}
+
+WordData &DSHashTable::operator[](const WordData& key) {
+    std::hash<std::string> hasher;
+    int location = hasher(key.word);
+    cout << "Got here" << endl;
+    for(WordData& x : table[location]){
+        if(x == key)
+            return x;
+    }
+}
+
 
 #endif //INC_22S_FINAL_PROJ_DSHASHTABLE_H
