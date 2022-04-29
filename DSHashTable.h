@@ -15,7 +15,7 @@
 
 class DSHashTable{
 private:
-    list<WordData>* table;
+    std::list<WordData>* table;
     int currentElements = 0;
     int maxElements;
 
@@ -33,7 +33,7 @@ public:
 
 void DSHashTable::resize() {
     int newMax = maxElements * maxElements;
-    list<WordData>* newTable = new list<WordData>[newMax];
+    std::list<WordData>* newTable = new std::list<WordData>[newMax];
 
     std::hash<std::string> hasher;
     for(int i = 0; i < maxElements; i++){
@@ -50,13 +50,13 @@ void DSHashTable::resize() {
 
 DSHashTable::DSHashTable(int size) {
     maxElements = size;
-    table = new list<WordData>[maxElements];
+    table = new std::list<WordData>[maxElements];
 }
 
 void DSHashTable::insert(const WordData& element) {
     std::hash<std::string> hasher;
     auto location = hasher(element.word) % maxElements;
-    cout << "Inserted " << element << " at " << location << endl;
+    std::cout << "Inserted " << element << " at " << location << std::endl;
     table[location].push_back(element);
     currentElements++;
 
@@ -64,7 +64,7 @@ void DSHashTable::insert(const WordData& element) {
         resize();
 }
 
-WordData &DSHashTable::operator[](const string& key) {
+WordData &DSHashTable::operator[](const std::string& key) {
     try{
         std::hash<std::string> hasher;
         int location = hasher(key) % maxElements;
@@ -82,7 +82,7 @@ WordData &DSHashTable::operator[](const WordData& key) {
     try{
         std::hash<std::string> hasher;
         int location = hasher(key.word);
-        cout << "Got here" << endl;
+        std::cout << "Got here" << std::endl;
         for(WordData& x : table[location]){
             if(x == key)
                 return x;

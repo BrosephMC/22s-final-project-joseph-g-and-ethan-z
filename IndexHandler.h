@@ -7,11 +7,14 @@
 
 #include "DSAVLTree.h"
 #include "WordData.h"
+#include "DSHashTable.h"
 #include <string>
 
 class IndexHandler {
 private:
     DSAVLTree<WordData> wordIndex;
+    DSHashTable orgIndex{500};
+    DSHashTable peopleIndex{500};
 
 public:
     /**
@@ -35,11 +38,6 @@ public:
      * @return WordData that corresponds with the entered word.
      */
     WordData& getWord(const WordData& word);
-
-    /**
-     * Saves the index to file.
-     */
-    void saveIndex();
 };
 
 
