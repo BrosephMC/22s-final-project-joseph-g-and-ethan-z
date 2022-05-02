@@ -90,7 +90,8 @@ private:
      * @param word
      * @param articleID
      */
-    void indexWordInAVL(AVLNode* node, const std::string& word, const std::string& articleID);
+    void indexWordInAVL(AVLNode* node, const std::string& word, const std::string& articleID,
+                        const std::string& filePath, const std::string& date);
 
     //Recursive Output Functions
     void PreOrder(AVLNode* node, std::ostream& output);
@@ -297,21 +298,28 @@ T &DSAVLTree<T>::find(DSAVLTree::AVLNode *node, const T &element) {
 }
 
 template<typename T>
-void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &word, const std::string &articleID) {
+void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &word, const std::string &articleID,
+                                  const std::string& filePath, const std::string& date) {
     if(node == nullptr){
         WordData insertWord(word);
         insertWord.articles.push_back(articleID);
+        insertWord.filePaths.push_back(filePath);
+        insertWord.dates.push_back(date);
         insert(insertWord);
         return;
     }
     if(node->data == word){
         node->data.articles.push_back(articleID);
+        node->data.filePaths.push_back(filePath);
+        node->data.dates.push_back(date);
         return;
     }
     if(node->data < word){
         if(node->right == nullptr){
             WordData insertWord(word);
             insertWord.articles.push_back(articleID);
+            insertWord.filePaths.push_back(filePath);
+            insertWord.dates.push_back(date);
             insert(insertWord);
             return;
         }
@@ -322,6 +330,8 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
         if (node->left == nullptr){
             WordData insertWord(word);
             insertWord.articles.push_back(articleID);
+            insertWord.filePaths.push_back(filePath);
+            insertWord.dates.push_back(date);
             insert(insertWord);
             return;
         }

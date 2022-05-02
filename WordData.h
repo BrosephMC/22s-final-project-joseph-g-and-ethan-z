@@ -14,6 +14,8 @@ public:
     std::string word;
     //Articles that contain the word
     std::vector<std::string> articles;
+    std::vector<std::string> filePaths;
+    std::vector<std::string> dates;
 
     //Constructors and Destructors
     WordData(const std::string& w) { word = w; }

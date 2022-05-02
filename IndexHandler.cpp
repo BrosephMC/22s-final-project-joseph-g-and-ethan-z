@@ -4,8 +4,9 @@
 
 #include "IndexHandler.h"
 
-void IndexHandler::indexWord(const std::string& word, const std::string& articleID) {
-    wordIndex.indexWordInAVL(word, articleID);
+void IndexHandler::indexWord(const std::string& word, const std::string& articleID, const std::string& filePath,
+                             const std::string& date) {
+    wordIndex.indexWordInAVL(word, articleID, filePath, date);
 }
 
 bool IndexHandler::containsWord(const WordData& word) const {

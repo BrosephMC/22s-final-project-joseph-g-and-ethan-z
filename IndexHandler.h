@@ -18,8 +18,11 @@ public:
      * Inserts the word if it isn't already in the index then adds the articleID to that word.
      * @param word - Word to find or create in the index.
      * @param articleID - ID of the article the word was found in.
+     * @param filePath - File path to the file the word was found in.
+     * @param date - Date of the file the word was found in.
      */
-    void indexWord(const std::string& word, const std::string& articleID);
+    void indexWord(const std::string& word, const std::string& articleID, const std::string& filePath,
+                   const std::string& date);
 
     /**
      * Returns if the given word corresponds to any WordData in the wordIndex.
