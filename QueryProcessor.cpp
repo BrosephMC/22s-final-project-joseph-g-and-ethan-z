@@ -14,7 +14,8 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
     string word;
     vector<string> queryList;
     DocumentParser doc;
-    vector<string> results;
+    //vector<string> results;
+    vector<WordData::Article> results;
 
     chrono::time_point<chrono::high_resolution_clock> start, end;
     chrono::duration<double> time_in_seconds;
@@ -171,35 +172,35 @@ vector<T> QueryProcessor::difference(vector<T> &v1, vector<T> &v2) {
     return v3;
 }
 
-void QueryProcessor::printResults(vector<string> &results) {
+void QueryProcessor::printResults(vector<WordData::Article> &results) {
     cout << " Number of articles found: " << results.size() << endl;
     cout << "Final search results: " << endl;
 
     //https://thispointer.com/c-how-to-find-duplicates-in-a-vector/
 
     // Create a map to store the frequency of each element in vector
-    map<string, int> countMap;
+    map<WordData::Article, int> countMap;
 
     // Iterate over the vector and store the frequency of each element in map
     for (auto & elem : results)
     {
-        auto loopResult = countMap.insert(pair<string, int>(elem, 1));
+        auto loopResult = countMap.insert(pair<WordData::Article, int>(elem, 1));
         if (loopResult.second == false)
             loopResult.first->second++;
     }
 
-    vector<pair<int, string> > invertedPair;
+    vector<pair<int, WordData::Article>> invertedPair;
 
     //make the count map inverted so it can sort by number
     for (auto const &pair: countMap) {
         invertedPair.push_back(make_pair(pair.second, pair.first));
     }
 
-    sort(invertedPair.begin(),invertedPair.end());
+    //sort(invertedPair.begin(),invertedPair.end());
 
     //display results
     for (int i = invertedPair.size()-1; i >= 0; i--) {
-        pair < int, string> elem = invertedPair.at(i);
+        pair < int, WordData::Article> elem = invertedPair.at(i);
         cout << elem.second;
         if(elem.first > 1)
             cout << " x" << elem.first;

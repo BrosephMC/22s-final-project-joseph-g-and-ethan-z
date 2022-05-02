@@ -23,7 +23,7 @@ public:
         //Stub
         bool operator< (const Article otherArticle) const { return true; }
         friend std::ostream& operator<< (std::ostream& output, const Article& thisArticle){
-            output << thisArticle.article << std::endl << thisArticle.filepath << std::endl
+            output << thisArticle.article << std::endl << thisArticle.filePath << std::endl
                 << thisArticle.date << std::endl;
         }
     };
@@ -51,7 +51,7 @@ public:
     bool operator<= (const std::string& otherString) const { return word <= otherString; }
 
     void insertArticle(const std::string& art, const std::string& file, const std::string& date){
-        articles.push_back(article(art, file, date));
+        articles.push_back(Article(art, file, date));
     }
 
     friend std::ostream& operator<< (std::ostream& output, const WordData& wordData)

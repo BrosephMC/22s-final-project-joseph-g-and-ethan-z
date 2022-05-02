@@ -17,7 +17,7 @@ class QueryProcessor {
 public:
 
     void Search(string word, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON);
-    void printResults(vector<string> &results);
+    void printResults(vector<WordData::Article> &results);
     template <typename T>
     vector<T> intersection(vector<T> &v1, vector<T> &v2);
     template <typename T>
