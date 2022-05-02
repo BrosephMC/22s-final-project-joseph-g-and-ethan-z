@@ -137,7 +137,8 @@ public:
      * @param word
      * @param articleID
      */
-    void indexWordInAVL(const std::string& word, const std::string& articleID);
+    void indexWordInAVL(const std::string& word, const std::string& articleID,
+                        const std::string& filePath, const std::string& date);
 
     /**
      * Outputs the elements of the DSAVLTree pre order.

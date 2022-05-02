@@ -34,7 +34,26 @@ public:
     //Checks if word is less than or equal to the inputted string
     bool operator<= (const std::string& otherString) const { return word <= otherString; }
 
-    friend std::ostream& operator<< (std::ostream& output, const WordData& wordData) { output << wordData.word; }
+    friend std::ostream& operator<< (std::ostream& output, const WordData& wordData)
+    {
+        output << wordData.word << std::endl;
+
+        for(const std::string& a : wordData.articles){
+            output << a << " ";
+        }
+        output << std::endl;
+
+        for(const std::string& f : wordData.filePaths){
+            output << f << " ";
+        }
+        output << std::endl;
+
+        for(const std::string& d : wordData.dates){
+            output << d << " ";
+        }
+        output << std::endl;
+
+    }
 };
 
 #endif //INC_22S_FINAL_PROJ_WORDDATA_H
