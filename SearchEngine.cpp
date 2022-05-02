@@ -9,6 +9,11 @@ SearchEngine::SearchEngine(const string &dataBase) : dataBasePath(dataBase) {
 
 }
  */
+
+void SearchEngine::start() {
+
+}
+
 SearchEngine::SearchEngine(){}
 
 void SearchEngine::parseDatabase(char*& path) {

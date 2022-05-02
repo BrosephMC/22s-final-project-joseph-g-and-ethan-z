@@ -10,12 +10,28 @@
 
 struct WordData{
 public:
+    struct Article{
+    public:
+        std::string article;
+        std::string filePath;
+        std::string date;
+
+        Article(const std::string& art, const std::string& file, const std::string& dt){
+            article = art; filePath = file; date = dt;
+        }
+
+        //Stub
+        bool operator< (const Article otherArticle) const { return true; }
+        friend std::ostream& operator<< (std::ostream& output, const Article& thisArticle){
+            output << thisArticle.article << std::endl << thisArticle.filepath << std::endl
+                << thisArticle.date << std::endl;
+        }
+    };
+
     //Indexed word
     std::string word;
     //Articles that contain the word
-    std::vector<std::string> articles;
-    std::vector<std::string> filePaths;
-    std::vector<std::string> dates;
+    std::vector<Article> articles;
 
     //Constructors and Destructors
     WordData(const std::string& w) { word = w; }
@@ -34,24 +50,17 @@ public:
     //Checks if word is less than or equal to the inputted string
     bool operator<= (const std::string& otherString) const { return word <= otherString; }
 
+    void insertArticle(const std::string& art, const std::string& file, const std::string& date){
+        articles.push_back(article(art, file, date));
+    }
+
     friend std::ostream& operator<< (std::ostream& output, const WordData& wordData)
     {
         output << wordData.word << std::endl;
 
-        for(const std::string& a : wordData.articles){
-            output << a << " ";
+        for(const Article& a : wordData.articles){
+            output << a;
         }
-        output << std::endl;
-
-        for(const std::string& f : wordData.filePaths){
-            output << f << " ";
-        }
-        output << std::endl;
-
-        for(const std::string& d : wordData.dates){
-            output << d << " ";
-        }
-        output << std::endl;
 
     }
 };

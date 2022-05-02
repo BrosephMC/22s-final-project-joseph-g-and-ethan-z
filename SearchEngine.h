@@ -25,6 +25,8 @@ public:
     //SearchEngine(const string& dataBase);
     SearchEngine();
 
+    void start();
+
     /**
      * Calls the ParseDatabse function in DocumentParser
      * @param path - set of folders to parse

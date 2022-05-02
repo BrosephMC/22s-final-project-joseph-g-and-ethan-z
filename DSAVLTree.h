@@ -303,24 +303,18 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
                                   const std::string& filePath, const std::string& date) {
     if(node == nullptr){
         WordData insertWord(word);
-        insertWord.articles.push_back(articleID);
-        insertWord.filePaths.push_back(filePath);
-        insertWord.dates.push_back(date);
+        insertWord.insertArticle(articleID, filePath, date);
         insert(insertWord);
         return;
     }
     if(node->data == word){
-        node->data.articles.push_back(articleID);
-        node->data.filePaths.push_back(filePath);
-        node->data.dates.push_back(date);
+        node->data.insertArticle(articleID, filePath, date);
         return;
     }
     if(node->data < word){
         if(node->right == nullptr){
             WordData insertWord(word);
-            insertWord.articles.push_back(articleID);
-            insertWord.filePaths.push_back(filePath);
-            insertWord.dates.push_back(date);
+            insertWord.insertArticle(articleID, filePath, date);
             insert(insertWord);
             return;
         }
@@ -330,9 +324,7 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
     else if(WordData(word) < node->data) {
         if (node->left == nullptr){
             WordData insertWord(word);
-            insertWord.articles.push_back(articleID);
-            insertWord.filePaths.push_back(filePath);
-            insertWord.dates.push_back(date);
+            insertWord.insertArticle(articleID, filePath, date);
             insert(insertWord);
             return;
         }
