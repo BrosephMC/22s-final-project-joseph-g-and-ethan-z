@@ -22,7 +22,6 @@ class DocumentParser {
 
 public:
     rapidjson::Document doc;
-
     map<string, string> stopWords;
 
     //Initializer

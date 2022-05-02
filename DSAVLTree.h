@@ -325,7 +325,7 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
             return;
         }
         else
-            indexWordInAVL(node->right, word, articleID);
+            indexWordInAVL(node->right, word, articleID, filePath, date);
     }
     else if(WordData(word) < node->data) {
         if (node->left == nullptr){
@@ -337,7 +337,7 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
             return;
         }
         else
-            indexWordInAVL(node->left, word, articleID);
+            indexWordInAVL(node->left, word, articleID, filePath, date);
     }
 }
 
@@ -398,9 +398,10 @@ T &DSAVLTree<T>::find(const T& element) {
 }
 
 template<typename T>
-void DSAVLTree<T>::indexWordInAVL(const std::string &word, const std::string &articleID) {
+void DSAVLTree<T>::indexWordInAVL(const std::string &word, const std::string &articleID, const std::string& filePath,
+                                  const std::string& date) {
     static_assert(std::is_base_of<WordData, T>::value, "Nodes must be WordData.");
-    indexWordInAVL(root, word, articleID);
+    indexWordInAVL(root, word, articleID, filePath, date);
 }
 
 template<typename T>

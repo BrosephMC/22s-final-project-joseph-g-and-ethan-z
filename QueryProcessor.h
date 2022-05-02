@@ -8,7 +8,7 @@
 #include <string>
 #include "IndexHandler.h"
 #include "porter2_stemmer.h"
-#include <map>;
+#include <map>
 
 using namespace std;
 
@@ -18,10 +18,12 @@ public:
 
     void Search(string word, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON);
     void printResults(vector<string> &results);
-    vector<string> intersection(vector<string> &v1, vector<string> &v2);
-    vector<string> difference(vector<string> &v1, vector<string> &v2);
-    void sortMap(map<string, int>& M);
-    static bool cmpMap(pair<string, int>& a, pair<string, int>& b);
+    template <typename T>
+    vector<T> intersection(vector<T> &v1, vector<T> &v2);
+    template <typename T>
+    vector<T> difference(vector<T> &v1, vector<T> &v2);
+    void openFile(const string& fileName);
+    void displayGeneralStats(IndexHandler &ih);
 
 };
 

@@ -25,6 +25,17 @@ int main(int argc, char** argv) {
     table["goodbye"].articles[0] = "000000";
     cout << table["goodbye"].articles[0] << endl;
 
+    string input;
+    SearchEngine searchEngine;
+    searchEngine.parseDatabase(argv[2]);
+     do {
+        cout << "Search query: " << endl;
+        getline(cin, input);
+         if(input == "q")
+             break;
+        cout << "cin: " << input << endl;
+        searchEngine.search(input);
+    } while(input != "q");
 
     return 0;
 }

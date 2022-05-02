@@ -16,3 +16,13 @@ bool IndexHandler::containsWord(const WordData& word) const {
 WordData &IndexHandler::getWord(const WordData& word) {
     return wordIndex.find(word);
 }
+
+//
+void IndexHandler::addNodeCount(int num) {
+    nodeCount += num;
+}
+
+int IndexHandler::getNodeCount() {
+    return nodeCount;
+}
+//

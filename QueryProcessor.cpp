@@ -4,6 +4,8 @@
 
 #include "QueryProcessor.h"
 #include "DocumentParser.h"
+#include <chrono>
+#include "WordData.h"
 
 //stem the user query
 void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON) {
@@ -13,6 +15,10 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
     vector<string> queryList;
     DocumentParser doc;
     vector<string> results;
+
+    chrono::time_point<chrono::high_resolution_clock> start, end;
+    chrono::duration<double> time_in_seconds;
+    start = chrono::high_resolution_clock::now();
 
     //insert words into queryList vector
     while(ss >> word){
@@ -101,6 +107,11 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
             i+=1;
             continue;
         }
+        else if(word == "FILE"){
+            cout << "FILE" << endl;
+            string word1 = queryList.at(i+1);
+
+        }
 
         //if single word
         if (ih.containsWord(word)) {
@@ -118,13 +129,24 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
         cout << "SEARCH end" << endl;
     }
 
+    displayGeneralStats(ih);
+
+    cout << "Search Statistics" << endl;
+
+    cout << " You searched: " << query << endl;
+
+    end = chrono::high_resolution_clock::now();
+    time_in_seconds = end - start;
+    cout << fixed << " Search time in seconds: " << time_in_seconds.count() << endl;
+
     printResults(results);
 
 }
 
 //https://stackoverflow.com/questions/19483663/vector-intersection-in-c
-vector<string> QueryProcessor::intersection(vector<string> &v1, vector<string> &v2) {
-    vector<string> v3;
+template <typename T>
+vector<T> QueryProcessor::intersection(vector<T> &v1, vector<T> &v2) {
+    vector<T> v3;
 
     sort(v1.begin(), v1.end());
     sort(v2.begin(), v2.end());
@@ -136,8 +158,9 @@ vector<string> QueryProcessor::intersection(vector<string> &v1, vector<string> &
 }
 
 //https://stackoverflow.com/questions/641724/remove-the-common-entities-from-two-vector
-vector<string> QueryProcessor::difference(vector<string> &v1, vector<string> &v2) {
-    vector<string> v3;
+template <typename T>
+vector<T> QueryProcessor::difference(vector<T> &v1, vector<T> &v2) {
+    vector<T> v3;
 
     sort(v1.begin(), v1.end());
     sort(v2.begin(), v2.end());
@@ -149,13 +172,14 @@ vector<string> QueryProcessor::difference(vector<string> &v1, vector<string> &v2
 }
 
 void QueryProcessor::printResults(vector<string> &results) {
+    cout << " Number of articles found: " << results.size() << endl;
     cout << "Final search results: " << endl;
-    cout << results.size() << endl;
 
     //https://thispointer.com/c-how-to-find-duplicates-in-a-vector/
 
     // Create a map to store the frequency of each element in vector
     map<string, int> countMap;
+
     // Iterate over the vector and store the frequency of each element in map
     for (auto & elem : results)
     {
@@ -164,43 +188,34 @@ void QueryProcessor::printResults(vector<string> &results) {
             loopResult.first->second++;
     }
 
-    sortMap(countMap);
+    vector<pair<int, string> > invertedPair;
 
-    // Iterate over the map
-    for (auto & elem : countMap)
-    {
-        cout << elem.first;
-        if(elem.second > 1)
-            cout << " x" << elem.second;
+    //make the count map inverted so it can sort by number
+    for (auto const &pair: countMap) {
+        invertedPair.push_back(make_pair(pair.second, pair.first));
+    }
+
+    sort(invertedPair.begin(),invertedPair.end());
+
+    //display results
+    for (int i = invertedPair.size()-1; i >= 0; i--) {
+        pair < int, string> elem = invertedPair.at(i);
+        cout << elem.second;
+        if(elem.first > 1)
+            cout << " x" << elem.first;
+
         cout << endl;
     }
 }
 
-//https://www.geeksforgeeks.org/sorting-a-map-by-value-in-c-stl/
-bool QueryProcessor::cmpMap(pair<string, int>& a, pair<string, int>& b)
-{
-    return (a.second < b.second);
+void QueryProcessor::openFile(const string& fileName){
+
 }
 
-void QueryProcessor::sortMap(map<string, int>& M)
-{
-
-    // Declare vector of pairs
-    vector<pair<string, int> > A;
-
-    // Copy key-value pair from Map
-    // to vector of pairs
-    for (auto& it : M) {
-        A.push_back(it);
-    }
-
-    // Sort using comparator function
-    sort(A.begin(), A.end(),QueryProcessor::cmpMap);
-
-    // Print the sorted value
-    //for (auto& it : A) {
-    //
-    //    cout << it.first << ' '
-    //         << it.second << endl;
-    //}
+void QueryProcessor::displayGeneralStats(IndexHandler &ih) {
+    cout << endl << "General Statistics" << endl;
+    cout << " Total number of words indexed: " << ih.getNodeCount() << endl;
+    //top 25 most frequent words
+    //total number of unique orgs and persons entities
+    //total number of articles parsed
 }

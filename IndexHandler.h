@@ -12,6 +12,9 @@
 class IndexHandler {
 private:
     DSAVLTree<WordData> wordIndex;
+    //
+    int nodeCount = 0;
+    //
 
 public:
     /**
@@ -38,6 +41,11 @@ public:
      * @return WordData that corresponds with the entered word.
      */
     WordData& getWord(const WordData& word);
+
+    //
+    void addNodeCount(int num);
+    int getNodeCount();
+    //
 };
 
 
