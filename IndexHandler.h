@@ -46,6 +46,8 @@ public:
     void addNodeCount(int num);
     int getNodeCount();
     //
+
+    void saveIndex();
 };
 
 

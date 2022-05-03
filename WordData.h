@@ -64,9 +64,11 @@ public:
     {
         output << wordData.word << std::endl;
 
+        output << "-" << std::endl;
         for(const Article& a : wordData.articles){
             output << a;
         }
+        output << "-" << std::endl;
 
     }
 };

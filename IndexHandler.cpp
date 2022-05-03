@@ -3,6 +3,7 @@
 //
 
 #include "IndexHandler.h"
+#include <fstream>
 
 void IndexHandler::indexWord(const std::string& word, const std::string& articleID, const std::string& filePath,
                              const std::string& date) {
@@ -24,5 +25,11 @@ void IndexHandler::addNodeCount(int num) {
 
 int IndexHandler::getNodeCount() {
     return nodeCount;
+}
+
+void IndexHandler::saveIndex() {
+    std::ofstream output("IndexProfile.dat");
+    wordIndex.outputPreOrder(output);
+    output.close();
 }
 //

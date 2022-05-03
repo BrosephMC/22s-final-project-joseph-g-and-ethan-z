@@ -35,6 +35,8 @@ void SearchEngine::start() {
         else if(input == "2"){
             document.ParseDatabase(dataBasePath, ih, ihORG, ihPERSON);
             cout << "Completed" << endl;
+
+            ih.saveIndex();
         }
     }
 }

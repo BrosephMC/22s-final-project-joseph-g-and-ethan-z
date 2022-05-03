@@ -336,10 +336,12 @@ void DSAVLTree<T>::indexWordInAVL(DSAVLTree::AVLNode *node, const std::string &w
 template<typename T>
 void DSAVLTree<T>::PreOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
     if(node != nullptr){
-        output << node->data << std::endl;
-        PreOrder(node->left);
-        PreOrder(node->right);
+        output << node->data;
+        PreOrder(node->left, output);
+        PreOrder(node->right, output);
     }
+    else
+        output << "NULLPTR" << std::endl;
 }
 
 template<typename T>
@@ -354,8 +356,8 @@ void DSAVLTree<T>::InOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
 template<typename T>
 void DSAVLTree<T>::PostOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
     if(node != nullptr){
-        PostOrder(node->left);
-        PostOrder(node->right);
+        PostOrder(node->left, output);
+        PostOrder(node->right, output);
         output << node->data << std::endl;
     }
 }
