@@ -13,7 +13,7 @@ SearchEngine::SearchEngine(const string &dataBase) : dataBasePath(dataBase) {
  */
 
 void SearchEngine::start() {
-    string input("");
+    string input;
     while(input != "5"){
         cout << "S E A R C H   E N G I N E" << endl;
         cout << "=========================" << endl;
@@ -23,12 +23,14 @@ void SearchEngine::start() {
         cout << "4) Load Current Index" << endl;
         cout << "5) Quit" << endl;
         cout << endl;
-        cout << "Select an option: "; cin >> input;
+        cout << "Select an option: ";
+        getline(cin, input);
         cout << endl;
 
         if(input == "1"){
-            string query("");
-            cout << "Enter a query: "; cin >> query;
+            string query;
+            cout << "Search query (type q to quit): " << endl;
+            getline(cin, query);
             cout << endl;
             search(query);
         }

@@ -36,7 +36,7 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
     for(int i = 0; i < queryList.size(); i++) {
         cout << " SEARCH" << endl;
         word = queryList.at(i);
-        cout << "search word: " << word << endl;
+        //cout << "search word: " << word << endl;
 
         if(word == "OR"){
             continue;
@@ -215,7 +215,7 @@ void QueryProcessor::printResults(vector<WordData::Article> &results) {
     int pageNumber = 1;
     while(input != "s"){
         cout << endl;
-        cout << "Type s to search again" << endl;
+        cout << "Type s to return to menu" << endl;
         cout << "Type p to turn to the next page of articles" << endl;
         cout << "Type o to open an article" << endl;
         getline(cin, input);
