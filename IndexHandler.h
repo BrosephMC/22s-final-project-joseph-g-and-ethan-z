@@ -48,6 +48,8 @@ public:
     //
 
     void saveIndex();
+
+    void loadIndex();
 };
 
 

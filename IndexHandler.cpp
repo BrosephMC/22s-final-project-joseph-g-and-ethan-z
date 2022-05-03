@@ -32,4 +32,9 @@ void IndexHandler::saveIndex() {
     wordIndex.outputPreOrder(output);
     output.close();
 }
+
+void IndexHandler::loadIndex() {
+    wordIndex.loadAVLTree("IndexProfile.dat");
+    std::cout << "Complete" << std::endl;
+}
 //

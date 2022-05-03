@@ -8,6 +8,7 @@
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
+#include <fstream>
 #include "WordData.h"
 
 template<typename T>
@@ -157,6 +158,8 @@ public:
      * @param output - The ostream to output to.
      */
     void outputPostOrder(std::ostream& output);
+
+    void loadAVLTree(const std::string& filePath);
 };
 
 template<typename T>
@@ -340,8 +343,6 @@ void DSAVLTree<T>::PreOrder(DSAVLTree::AVLNode* node, std::ostream& output) {
         PreOrder(node->left, output);
         PreOrder(node->right, output);
     }
-    else
-        output << "NULLPTR" << std::endl;
 }
 
 template<typename T>
@@ -416,6 +417,43 @@ void DSAVLTree<T>::outputPostOrder(std::ostream& output) {
 template<typename T>
 DSAVLTree<T>::~DSAVLTree() {
     PostOrderDelete(root);
+}
+
+template<typename T>
+void DSAVLTree<T>::loadAVLTree(const std::string& filePath) {
+    PostOrderDelete(root);
+    int counter{0};
+
+    std::ifstream input(filePath);
+    std::string buffer;
+
+    while(getline(input, buffer)){
+   // for(int i = 0; i < 10; i++){
+        //getline(input, buffer);
+        WordData inputWord(buffer);
+        std::cout << "!!WORD!! " << buffer << std::endl;
+        getline(input, buffer);
+        getline(input, buffer);
+        counter++;
+        while(buffer != "-"){
+            std::string article;
+            std::string filePath;
+            std::string date;
+
+            article = buffer;
+            getline(input, filePath);
+            getline(input, date);
+
+            inputWord.insertArticle(article, filePath, date);
+            getline(input, buffer);
+
+        }
+        insert(inputWord);
+        if(counter % 50 == 0)
+            std::cout << counter << " Words Done!" << std::endl;
+    }
+
+    input.close();
 }
 
 #endif //INC_22S_FINAL_PROJECT_JOSEPH_G_AND_ETHAN_Z_DSAVLTREE_H
