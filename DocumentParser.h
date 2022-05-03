@@ -54,7 +54,9 @@ public:
     /**
      *
      */
-    void indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, const string& fileName);
+    void indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, char*& fileName);
+
+    void displayFileData(string &file);
 };
 
 //stopword map/hashmap/hashtable

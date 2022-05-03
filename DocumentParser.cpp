@@ -25,10 +25,8 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
     istringstream ss(doc["text"].GetString());
     string word;
 
-    string title = doc["title"].GetString();
     string date = doc["published"].GetString();
-    cout << " Title: " << title << endl;
-    cout << " Date published: " << date << endl;
+    //cout << " Date published: " << date << endl;
 
     while (ss >> word){
 
@@ -39,19 +37,19 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
             //cout << " - STOPWORD";
         } else {
             string id = doc["uuid"].GetString();
-            id += " ";
-            id += fileName;
+            //id += " ";
+            //id += fileName;
             ih.indexWord(word, id, fileName, date);
             ih.addNodeCount(1);
         }
     }
 }
 
-void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, const string& fileName){
+void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, char*& fileName){
 
     string id = doc["uuid"].GetString();
-    id += " ";
-    id += fileName;
+    //id += " ";
+    //id += fileName;
     string date = doc["published"].GetString();
 
     cout << " Organizations: ";
@@ -131,8 +129,8 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &
             //cout << appendedPath << endl;
 
             ParseDocument(appendedPath);
-            ParseText(ih, files.at(i));
-            indexOrgsAndPersons(ihORG, ihPERSON, files.at(i));
+            ParseText(ih, appendedPath);
+            indexOrgsAndPersons(ihORG, ihPERSON,appendedPath);
         }
 
         cout << endl;
@@ -153,6 +151,25 @@ void DocumentParser::simplifyWord(string &word) {
     }
 
     Porter2Stemmer::stem(word);
+}
+
+void DocumentParser::displayFileData(string &file) {
+    int maxCharCount = 500000;
+    char wholeFile[maxCharCount];
+
+    fstream data_file;
+    data_file.open(file);
+    data_file.getline(wholeFile, maxCharCount);
+    data_file.close();
+
+    doc.Parse(wholeFile);
+
+    string title = doc["title"].GetString();
+    string date = doc["published"].GetString();
+    string site = doc["thread"]["site"].GetString();
+    cout << " Title: " << title << endl;
+    cout << " Publishing site: " << site << endl;
+    cout << " Date published: " << date << endl;
 }
 
 DocumentParser::DocumentParser() {

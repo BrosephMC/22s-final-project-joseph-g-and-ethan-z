@@ -21,7 +21,13 @@ public:
         }
 
         //Stub
-        bool operator< (const Article otherArticle) const { return true; }
+        bool operator< (const Article otherArticle) const {
+            if(this->article < otherArticle.article){
+                return true;
+            } else {
+                return false;
+            }
+        }
         friend std::ostream& operator<< (std::ostream& output, const Article& thisArticle){
             output << thisArticle.article << std::endl << thisArticle.filePath << std::endl
                 << thisArticle.date << std::endl;

@@ -31,7 +31,7 @@ public:
      * Calls the ParseDatabse function in DocumentParser
      * @param path - set of folders to parse
      */
-    void parseDatabase(char*& path);
+    void parseDatabase(char* path);
 
     /**
      * Returns the articles which best fit the entered query.

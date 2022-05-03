@@ -14,7 +14,6 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
     string word;
     vector<string> queryList;
     DocumentParser doc;
-    //vector<string> results;
     vector<WordData::Article> results;
 
     chrono::time_point<chrono::high_resolution_clock> start, end;
@@ -131,9 +130,7 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
     }
 
     displayGeneralStats(ih);
-
     cout << "Search Statistics" << endl;
-
     cout << " You searched: " << query << endl;
 
     end = chrono::high_resolution_clock::now();
@@ -173,8 +170,8 @@ vector<T> QueryProcessor::difference(vector<T> &v1, vector<T> &v2) {
 }
 
 void QueryProcessor::printResults(vector<WordData::Article> &results) {
-    cout << " Number of articles found: " << results.size() << endl;
-    cout << "Final search results: " << endl;
+    cout << " Total number of articles found: " << results.size() << endl;
+    cout << "--Search results--" << endl << endl;
 
     //https://thispointer.com/c-how-to-find-duplicates-in-a-vector/
 
@@ -193,23 +190,32 @@ void QueryProcessor::printResults(vector<WordData::Article> &results) {
 
     //make the count map inverted so it can sort by number
     for (auto const &pair: countMap) {
-        invertedPair.push_back(make_pair(pair.second, pair.first));
+        invertedPair.emplace_back(pair.second, pair.first);
     }
 
-    //sort(invertedPair.begin(),invertedPair.end());
+    sort(invertedPair.begin(),invertedPair.end());
 
     //display results
-    for (int i = invertedPair.size()-1; i >= 0; i--) {
+    int count = 15;
+    int limit = invertedPair.size()-count;
+    if(limit < 0)
+        limit = 0;
+    for (int i = invertedPair.size()-1; i >= limit; i--) {
         pair < int, WordData::Article> elem = invertedPair.at(i);
-        cout << elem.second;
+        cout << "Article #" << invertedPair.size()-i << endl;
+        openFile(elem.second.filePath);
+        cout << " File path: " << elem.second.filePath << endl;
         if(elem.first > 1)
-            cout << " x" << elem.first;
+            cout << " Word occurrences: " << "x" << elem.first << endl;
 
         cout << endl;
     }
+    //add paginate loop here
 }
 
-void QueryProcessor::openFile(const string& fileName){
+void QueryProcessor::openFile(string& filePath){
+    DocumentParser dp;
+    dp.displayFileData(filePath);
 
 }
 
