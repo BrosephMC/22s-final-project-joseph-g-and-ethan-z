@@ -26,7 +26,6 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
     string word;
 
     string date = doc["published"].GetString();
-    //cout << " Date published: " << date << endl;
 
     while (ss >> word){
 
@@ -34,11 +33,9 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
 
         //find stop words
         if(stopWords.find(word) != stopWords.end() || word.length() <= 0){
-            //cout << " - STOPWORD";
+
         } else {
             string id = doc["uuid"].GetString();
-            //id += " ";
-            //id += fileName;
             ih.indexWord(word, id, fileName, date);
             ih.addNodeCount(1);
         }
@@ -48,22 +45,14 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
 void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, char*& fileName){
 
     string id = doc["uuid"].GetString();
-    //id += " ";
-    //id += fileName;
     string date = doc["published"].GetString();
 
-    cout << " Organizations: ";
     for (int i = 0; i < doc["entities"]["organizations"].Size(); i++){
-        cout << doc["entities"]["organizations"][i]["name"].GetString() << ", ";
         ihORG.indexWord(doc["entities"]["organizations"][i]["name"].GetString(), id, fileName, date);
     }
-    cout << endl;
-    cout << " Persons: ";
     for (int i = 0; i < doc["entities"]["persons"].Size(); i++){
-        cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
         ihPERSON.indexWord(doc["entities"]["persons"][i]["name"].GetString(), id, fileName, date);
     }
-    cout << endl;
 }
 
 void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &ihORG, IndexHandler &ihPERSON) {
@@ -94,7 +83,6 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &
     for(int i = 2; i < folders.size(); i++){
 
         folder = folders.at(i);
-        //cout << folder << " < this is a folder" << endl;
         vector<string> files;
 
         //creates a path string to specified folder
@@ -102,7 +90,6 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &
         appendedPathString += "/";
         appendedPathString += folder;
         char* appendedPath = const_cast<char *>(appendedPathString.c_str());
-        //cout << appendedPath << endl;
 
         //put file contents of directory into a vector
         if ((dir = opendir(appendedPath)) != nullptr) {
@@ -119,14 +106,12 @@ void DocumentParser::ParseDatabase(char *&path, IndexHandler &ih, IndexHandler &
         //iterates through and parses each file
         for(int i = 2; i < files.size(); i++){
             string file = files.at(i);
-            //cout << file << "| " << endl;
 
             //creates a path string to specified file
             string appendedPathString = appendedPath;
             appendedPathString += "/";
             appendedPathString += file;
             char* appendedPath = const_cast<char *>(appendedPathString.c_str());
-            //cout << appendedPath << endl;
 
             ParseDocument(appendedPath);
             ParseText(ih, appendedPath);
@@ -170,6 +155,35 @@ void DocumentParser::displayFileData(string &file) {
     cout << " Title: " << title << endl;
     cout << " Publishing site: " << site << endl;
     cout << " Date published: " << date << endl;
+
+    cout << " Organizations: ";
+    for (int i = 0; i < doc["entities"]["organizations"].Size(); i++){
+        cout << doc["entities"]["organizations"][i]["name"].GetString() << ", ";
+    }
+    cout << endl;
+    cout << " Persons: ";
+    for (int i = 0; i < doc["entities"]["persons"].Size(); i++){
+        cout << doc["entities"]["persons"][i]["name"].GetString() << ", ";
+    }
+    cout << endl;
+}
+
+void DocumentParser::openArticle(string &file){
+    int maxCharCount = 500000;
+    char wholeFile[maxCharCount];
+
+    fstream data_file;
+    data_file.open(file);
+    data_file.getline(wholeFile, maxCharCount);
+    data_file.close();
+
+    doc.Parse(wholeFile);
+
+    string title = doc["title"].GetString();
+    string text = doc["text"].GetString();
+
+    cout << endl << " ----- Title: " << title << " ----- " << endl;
+    cout << text << endl;
 }
 
 DocumentParser::DocumentParser() {

@@ -107,11 +107,6 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
             i+=1;
             continue;
         }
-        else if(word == "FILE"){
-            cout << "FILE" << endl;
-            string word1 = queryList.at(i+1);
-
-        }
 
         //if single word
         if (ih.containsWord(word)) {
@@ -129,6 +124,7 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
         cout << "SEARCH end" << endl;
     }
 
+    //output stats
     displayGeneralStats(ih);
     cout << "Search Statistics" << endl;
     cout << " You searched: " << query << endl;
@@ -137,6 +133,7 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
     time_in_seconds = end - start;
     cout << fixed << " Search time in seconds: " << time_in_seconds.count() << endl;
 
+    //prints results
     printResults(results);
 
 }
@@ -170,7 +167,7 @@ vector<T> QueryProcessor::difference(vector<T> &v1, vector<T> &v2) {
 }
 
 void QueryProcessor::printResults(vector<WordData::Article> &results) {
-    cout << " Total number of articles found: " << results.size() << endl;
+    cout << " Total number of articles found (including duplicates): " << results.size() << endl;
     cout << "--Search results--" << endl << endl;
 
     //https://thispointer.com/c-how-to-find-duplicates-in-a-vector/
@@ -198,8 +195,10 @@ void QueryProcessor::printResults(vector<WordData::Article> &results) {
     //display results
     int count = 15;
     int limit = invertedPair.size()-count;
-    if(limit < 0)
+    if(limit < 0){
+        count += limit;
         limit = 0;
+    }
     for (int i = invertedPair.size()-1; i >= limit; i--) {
         pair < int, WordData::Article> elem = invertedPair.at(i);
         cout << "Article #" << invertedPair.size()-i << endl;
@@ -208,10 +207,72 @@ void QueryProcessor::printResults(vector<WordData::Article> &results) {
         cout << " File path: " << elem.second.filePath << endl;
         if(elem.first > 1)
             cout << " Word occurrences: " << "x" << elem.first << endl;
-
         cout << endl;
     }
-    //add paginate loop here
+
+    //user query loop - search, page, or open
+    string input;
+    int pageNumber = 1;
+    while(input != "s"){
+        cout << endl;
+        cout << "Type s to search again" << endl;
+        cout << "Type p to turn to the next page of articles" << endl;
+        cout << "Type o to open an article" << endl;
+        getline(cin, input);
+
+        if(input == "s"){
+            break;
+        }
+        else if(input == "p"){
+            if(count < 15){
+                cout << "cannot turn page" << endl;
+            } else {
+                limit -= 15;
+                if(limit < 0){
+                    count += limit;
+                    limit = 0;
+                }
+                pageNumber += 1;
+                //
+                cout << "asdf " << invertedPair.size() << endl;
+                cout << " Total number of articles found (including duplicates): " << results.size() << endl;
+                cout << "--Search results page: " << pageNumber << "--" << endl << endl;
+                for (int i = invertedPair.size()-1-((pageNumber-1)*15); i >= limit; i--) {
+                    pair < int, WordData::Article> elem = invertedPair.at(i);
+                    cout << "Article #" << invertedPair.size()-i << endl;
+                    DocumentParser dp;
+                    dp.displayFileData(elem.second.filePath);
+                    cout << " File path: " << elem.second.filePath << endl;
+                    if(elem.first > 1)
+                        cout << " Word occurrences: " << "x" << elem.first << endl;
+                    cout << endl;
+                }
+                //
+            }
+        }
+        else if(input == "o"){
+            cout << "Type in an article number " << (pageNumber-1)*15+1 << "-" << (pageNumber-1)*15 + count << ": " << endl;
+            getline(cin, input);
+            bool invalid = false;
+            for(int i = 0; i < input.length(); i++){
+                if(!isdigit(input[i])){
+                    invalid = true;
+                    continue;
+                }
+            }
+            if(!invalid){
+                if(stoi(input) >= (pageNumber-1)*15+1 && stoi(input) <= (pageNumber-1)*15 + count){
+                    DocumentParser dp;
+                    dp.openArticle(invertedPair.at(invertedPair.size()-stoi(input)).second.filePath);
+                } else {
+                    cout << "not a valid article number" << endl;
+                }
+            } else {
+                cout << "not a valid article number" << endl;
+            }
+
+        }
+    }
 }
 
 void QueryProcessor::displayGeneralStats(IndexHandler &ih) {
