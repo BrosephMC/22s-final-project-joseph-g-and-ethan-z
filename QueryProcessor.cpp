@@ -113,7 +113,7 @@ void QueryProcessor::Search(string query, IndexHandler &ih, IndexHandler &ihORG,
             WordData element = ih.getWord(word);
             cout << element.articles.size() << endl;
             for (int i = 0; i < element.articles.size(); i++) {
-                cout << element.articles.at(i) << endl;
+                //cout << element.articles.at(i) << endl;
                 results.push_back(element.articles.at(i));
             }
             cout << endl;

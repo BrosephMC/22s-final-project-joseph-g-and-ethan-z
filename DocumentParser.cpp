@@ -8,6 +8,7 @@
 using namespace std;
 
 void DocumentParser::ParseDocument(char *&file) {
+    /*
     try {
         int maxCharCount = 100000;
         char wholeFile[maxCharCount];
@@ -31,6 +32,17 @@ void DocumentParser::ParseDocument(char *&file) {
 
         doc.Parse(wholeFile);
     }
+    */
+    int maxCharCount = 500000;
+    char wholeFile[maxCharCount];
+
+    fstream data_file;
+    data_file.open(file);
+    data_file.getline(wholeFile, maxCharCount);
+    data_file.close();
+    cout << file << " is parsed" << endl;
+
+    doc.Parse(wholeFile);
 }
 
 void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
@@ -38,10 +50,10 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
     istringstream ss(doc["text"].GetString());
     string word;
 
-    //string date = doc["published"].GetString();
-    string date = "n";
-    //string id = doc["uuid"].GetString();
-    string id = "i";
+    string date = doc["published"].GetString();
+    //string date = "n";
+    string id = doc["uuid"].GetString();
+    //string id = "i";
 
     while (ss >> word){
 
@@ -60,10 +72,10 @@ void DocumentParser::ParseText(IndexHandler &ih, const string& fileName) {
 
 void DocumentParser::indexOrgsAndPersons(IndexHandler &ihORG, IndexHandler &ihPERSON, char*& fileName){
 
-    //string id = doc["uuid"].GetString();
-    string id = "i";
-    //string date = doc["published"].GetString();
-    string date = "n";
+    string id = doc["uuid"].GetString();
+    //string id = "i";
+    string date = doc["published"].GetString();
+    //string date = "n";
 
     for (int i = 0; i < doc["entities"]["organizations"].Size(); i++){
         ihORG.indexWord(doc["entities"]["organizations"][i]["name"].GetString(), id, fileName, date);
