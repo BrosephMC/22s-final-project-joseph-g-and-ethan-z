@@ -33,22 +33,18 @@ void SearchEngine::start() {
             search(query);
         }
         else if(input == "2"){
-            char* filePath;
-            cout << "Enter the file path to parse: ";
-            cin >> filePath;
-            cout << "filepath: " << filePath << endl;
-            cout << endl;
-            parseDatabase(filePath);
-            //document.ParseDatabase(filePath, ih, ihORG, ihPERSON);
+            document.ParseDatabase(dataBasePath, ih, ihORG, ihPERSON);
             cout << "Completed" << endl;
         }
     }
 }
 
-SearchEngine::SearchEngine(){}
+SearchEngine::SearchEngine(char*& dataBase){
+    dataBasePath = dataBase;
+}
 
-void SearchEngine::parseDatabase(char* path) {
-    document.ParseDatabase(path, ih, ihORG, ihPERSON);
+void SearchEngine::parseDatabase() {
+    document.ParseDatabase(dataBasePath, ih, ihORG, ihPERSON);
 }
 
 void SearchEngine::search(const string& query) {
