@@ -22,7 +22,6 @@ public:
     vector<T> intersection(vector<T> &v1, vector<T> &v2);
     template <typename T>
     vector<T> difference(vector<T> &v1, vector<T> &v2);
-    void openFile(string& filePath);
     void displayGeneralStats(IndexHandler &ih);
 
 };

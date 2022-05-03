@@ -203,7 +203,8 @@ void QueryProcessor::printResults(vector<WordData::Article> &results) {
     for (int i = invertedPair.size()-1; i >= limit; i--) {
         pair < int, WordData::Article> elem = invertedPair.at(i);
         cout << "Article #" << invertedPair.size()-i << endl;
-        openFile(elem.second.filePath);
+        DocumentParser dp;
+        dp.displayFileData(elem.second.filePath);
         cout << " File path: " << elem.second.filePath << endl;
         if(elem.first > 1)
             cout << " Word occurrences: " << "x" << elem.first << endl;
@@ -211,12 +212,6 @@ void QueryProcessor::printResults(vector<WordData::Article> &results) {
         cout << endl;
     }
     //add paginate loop here
-}
-
-void QueryProcessor::openFile(string& filePath){
-    DocumentParser dp;
-    dp.displayFileData(filePath);
-
 }
 
 void QueryProcessor::displayGeneralStats(IndexHandler &ih) {
