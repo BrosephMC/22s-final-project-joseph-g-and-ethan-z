@@ -12,7 +12,7 @@
 
 class SearchEngine {
 private:
-    string dataBasePath = "";
+    char* dataBasePath;
 
     DocumentParser document;
     IndexHandler ih;
@@ -23,15 +23,14 @@ private:
 public:
     //Constructors and Destructors
     //SearchEngine(const string& dataBase);
-    SearchEngine();
+    SearchEngine(char*& dataBase);
 
     void start();
 
     /**
      * Calls the ParseDatabse function in DocumentParser
-     * @param path - set of folders to parse
      */
-    void parseDatabase(char*& path);
+    void parseDatabase();
 
     /**
      * Returns the articles which best fit the entered query.

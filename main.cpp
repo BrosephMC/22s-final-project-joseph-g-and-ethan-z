@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    SearchEngine sE;
+    SearchEngine sE(argv[1]);
     sE.start();
 
     return 0;
